@@ -1,0 +1,12 @@
+{
+	"printWidth": 80,
+	"tabWidth": 2,
+	"useTabs": true,
+	"arrowParens": "always",
+	"semi": true,
+	"singleQuote": false,
+	"singleAttributePerLine": true,
+	"svelteAllowShorthand": true,
+	"svelteIndentScriptAndStyle": true,
+	"svelteSortOrder": "options-scripts-markup-styles"
+}
