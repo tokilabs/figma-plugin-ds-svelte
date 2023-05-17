@@ -5,6 +5,8 @@ import serve from "rollup-plugin-serve";
 import livereload from "rollup-plugin-livereload";
 import svg from "rollup-plugin-svg";
 import postcss from "rollup-plugin-postcss";
+import typescript from "@rollup/plugin-typescript";
+import autoPreprocess from "svelte-preprocess";
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -18,9 +20,11 @@ export default {
 	plugins: [
 		svelte({
 			include: ["src/**/*.svelte", "node_modules/**/src/*.svelte"],
+			preprocess: autoPreprocess(),
 		}),
 		resolve(),
 		commonjs(),
+		typescript(),
 		svg(),
 		postcss({
 			plugins: [],

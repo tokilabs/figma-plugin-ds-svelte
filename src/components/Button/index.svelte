@@ -1,24 +1,27 @@
-<script>
-    import { onMount } from 'svelte';
+<script lang="ts">
+    export let variant: string= 'primary';
+    export let disabled: boolean = false;
+    export let destructive: boolean = false;
+    export let type: "button" | "submit" | "reset" | null | undefined = 'button';
 
-    export let variant = 'primary';
-    export let disabled = false;
-    export let destructive = false;
+    let className: string = '';
     export { className as class };
-
-    let className = '';
+    
+    const handleClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        target.blur();
+    } 
 
 </script>
 
 <button
-    on:click
-    on:submit|preventDefault
-    onclick="this.blur();"
-    {variant}
+    {type}
+    on:click={handleClick}
+    class="{variant} {className} {destructive ? 'destructive' : ''} {disabled ? 'disabled' : ''}"
     {disabled}
-    class:destructive={destructive}
-    class="{variant} {className}">
-        <slot />
+
+>
+    <slot />
 </button>
 
 <style>

@@ -1,21 +1,21 @@
-<script>
+<script lang="ts">
 
     import Icon from './../Icon/index.svelte';
 
-    export let id = null;
-    export let value = null;
-    export let name = null;
-    export let iconText = null;
-    export let borders = false;
-    export let disabled = false;
-    export let iconName = null;
-    export let spin = false;
-    export let invalid = false;
-    export let errorMessage = 'Error message';
-    export let placeholder = 'Input something here...';
+    export let id: string | null = null;
+    export let value: string | null = null;
+    export let name: string | null = null;
+    export let iconText: string | null = null;
+    export let borders: boolean = false;
+    export let disabled: boolean = false;
+    export let iconName: string | null = null;
+    export let spin: boolean = false;
+    export let invalid: boolean = false;
+    export let errorMessage: string = 'Error message';
+    export let placeholder: string = 'Input something here...';
     export { className as class };
 
-    let className = '';
+    let className: string = '';
 
 </script>
 
@@ -36,7 +36,6 @@
             {name}
             {disabled}
             {placeholder}
-            {errorMessage}
             class="indent"
             class:borders={borders}
             class:invalid={invalid}
@@ -61,7 +60,6 @@
             {name}
             {disabled}
             {placeholder}
-            {errorMessage}
             class:borders={borders}
             class:invalid={invalid}
         >

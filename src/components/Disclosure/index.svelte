@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 
     import { createEventDispatcher, setContext, onMount } from 'svelte';
-    import { writable } from 'svelte/store';
+    import { Writable, writable } from 'svelte/store';
     import DisclosureItem, { disclosure } from "./../DisclosureItem/index.svelte";
     
     const dispatch = createEventDispatcher();
@@ -9,7 +9,7 @@
     let className = '';
     let disclosureWrapper;
 
-    const clickHandler = function(itemId) {
+    const clickHandler = function(itemId: null | undefined) {
         let currentVal = getValue(selected);
         if (currentVal != itemId) {
             selected.set(itemId);
@@ -22,9 +22,9 @@
 
     setContext(disclosure, { clickHandler, selected});
 
-    function getValue(store) {
+    function getValue(store: Writable<null>) {
         let $val;
-        store.subscribe($ => $val = $)()
+        store.subscribe(($: any) => $val = $)()
         return $val
     }
 

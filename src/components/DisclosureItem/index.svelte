@@ -1,8 +1,11 @@
-<script context="module">
-    export const disclosure = {};
+<script context="module" lang="ts">
+    export const disclosure = {
+        clickHandler: null,
+        selected: null
+    };
 </script>
 
-<script>
+<script lang="ts">
 
     import { getContext, onMount } from 'svelte';
     import Icon from './../Icon/index.svelte';
@@ -10,7 +13,7 @@
     import CaretDown from './../../icons/caret-down.svg';
 
     export let uniqueId = 'disclosureItem--' + ((Math.random() * 10000000).toFixed(0)).toString();
-    export let title = null;
+    export let title: string | null = null;
     export let expanded = false;
     export let section = false;
     export let open = false;
@@ -26,6 +29,7 @@
 </script>
 
 <li {open} {title} id={uniqueId} class:expanded={expanded}>
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div on:click={clickHandler.bind(null, uniqueId)} class="header" class:section={section}>
         <div class="icon">
             {#if expanded}

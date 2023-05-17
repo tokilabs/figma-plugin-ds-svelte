@@ -1,10 +1,10 @@
-<script>
-    export let id = null;
-    export let value = null;
-    export let rows = 2;
-    export let name = null;
-    export let disabled = false;
-    export let placeholder = 'Input something here...';
+<script lang="ts">
+    export let id: string | null = null;
+    export let value: string | null = null;
+    export let rows: number = 2;
+    export let name: string | null = null;
+    export let disabled: boolean = false;
+    export let placeholder: string = 'Input something here...';
     export { className as class };
 
     let className = '';
@@ -12,8 +12,7 @@
 </script>
 
 <div class="textarea {className}">
-    <textarea 
-        type="input"
+    <textarea
         on:input
         on:change
         on:keydown

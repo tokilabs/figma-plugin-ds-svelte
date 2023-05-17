@@ -1,25 +1,22 @@
-<script>
+<script lang="ts">
     import { onMount } from 'svelte';
 
-    export let size = 'xsmall';
-    export let weight = 'normal';
-    export let inverse = false; //this prop uses different letterspacing values for inversed type (light on dark)
-    export let color = '--figma-color-text';
-    export let inline = false;
+    export let size: string = 'small';
+    export let weight: string = 'normal';
+    export let inverse: boolean = false;
+    export let color: string = '--figma-color-text';
+    export let inline: boolean = false;
     export { className as class };
     
-    let className = '';
-    let cssColorVar; 
+    let className: string = '';
+    let cssColorVar: string = '';
 
     onMount(async () => {
-        if (color = 'black8' && inverse) {
+        if (color === 'black8' && inverse) {
             color = 'white';
         }
+        cssColorVar = `var(${color})`;
     });
-
-
-    cssColorVar = 'var(' + color + ')';
-
 </script>
 
 <div class="type {className} {size} {weight}" class:inverse={inverse} class:inline={inline} style="color: {cssColorVar}">

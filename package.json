@@ -7,6 +7,8 @@
     "svelte-click-outside": "^1.0.0"
   },
   "devDependencies": {
+    "@figma/plugin-typings": "^1.64.0",
+    "@rollup/plugin-typescript": "^11.1.1",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.23",
     "rollup": "^3.22.0",
@@ -18,6 +20,8 @@
     "rollup-plugin-svelte": "^7.1.4",
     "rollup-plugin-svg": "^2.0.0",
     "svelte": "^3.59.1",
+    "svelte-preprocess": "^5.0.3",
+    "tslib": "^2.5.0",
     "typescript": "^5.0.4"
   },
   "scripts": {

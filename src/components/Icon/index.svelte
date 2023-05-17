@@ -1,7 +1,7 @@
-<script>
-    export let iconName = null; //pass svg data into this var by importing an svg in parent
+<script lang="ts">
+    export let iconName:string| null = null; //pass svg data into this var by importing an svg in parent
     export let spin = false;
-    export let iconText = null;
+    export let iconText :string| null= null;
     export let color = '--figma-color-icon';
     export { className as class };
 
@@ -9,10 +9,10 @@
 
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <div 
     class:spin={spin}
-    {iconText}
-    {iconName} 
+
     class="icon-component {className}"
     style="color: var({color}); fill: var({color})"
     on:click>

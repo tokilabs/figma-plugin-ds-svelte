@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
     import Icon from './../Icon/index.svelte';
 
     export let spin = false;
-    export let color = "black8";
-    export let iconName = null;
-    export let iconText = null;
+    export let color: string = "black8";
+    export let iconName: string | null = null;
+    export let iconText: string | null = null;
     export { className as class };
 
-    let className = '';
+    let className: string = '';
 
 </script>
 

@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
 
-    let className = '';
+const className = '';
+ export { className as class };
 
 </script>
 
-<div>
+<div class={className}>
     <slot></slot>
 </div>
 

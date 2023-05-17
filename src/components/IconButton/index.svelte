@@ -1,18 +1,26 @@
-<script>
+<script lang="ts">
+  import { onMount } from 'svelte';
     import Icon from './../Icon/index.svelte';
 
     export let iconName = '';
-    export let iconText = null;
+    export let iconText:string|null = null;
     export let selected = false;
     export let spin = false;
     export let tabindex = 0;
     export { className as class };
 
     let className = '';
+    
+    const handleClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        target.blur();
+    } 
 
 </script>
 
-<div on:click onclick="this.blur();" class:selected={selected} class="{className}" tabindex={tabindex}>
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+<div  on:click="{handleClick}" class:selected={selected} class="{className}" tabindex={tabindex}>
     {#if selected === true}
         <Icon {iconName} {iconText} {spin} color="--figma-color-icon-onbrand"/>
     {:else}

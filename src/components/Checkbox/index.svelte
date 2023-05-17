@@ -1,5 +1,4 @@
-<script>
-
+<script lang="ts">
     export let checked = false;
     export let value = '';
     export let disabled = false;
@@ -9,6 +8,13 @@
     let uniqueId = 'checkbox--' + ((Math.random() * 10000000).toFixed(0)).toString();
     let className = '';
     
+
+
+    const handleClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        target.blur();
+    } 
+
 </script>
 
 <div class={className}>
@@ -19,7 +25,7 @@
         bind:value={value}
         {disabled} 
         {tabindex}
-        onclick="this.blur();"
+        on:click="{handleClick}"
         on:change
         on:focus
         on:blur>

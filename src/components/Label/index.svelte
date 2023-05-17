@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 
-    export { className as class };
     let className = '';
+    export { className as class };
 
 </script>
 
