@@ -1,6 +1,8 @@
 public/components.js
 todo.md
 
+.yarn/cache
+
 .DS_Store
 node_modules
 yarn.lock
