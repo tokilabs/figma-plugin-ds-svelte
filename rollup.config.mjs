@@ -24,7 +24,12 @@ export default {
 		}),
 		resolve(),
 		commonjs(),
-		typescript(),
+		typescript({
+			declaration: true,
+			declarationDir: "public",
+			sourceMap: !production,
+			
+		}),
 		svg(),
 		postcss({
 			plugins: [],
