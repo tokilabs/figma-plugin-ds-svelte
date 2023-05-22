@@ -28,7 +28,7 @@ export default {
 			declaration: true,
 			declarationDir: "public",
 			sourceMap: !production,
-			
+			include: ["src/**/*.ts", "ambient.d.ts"],
 		}),
 		svg(),
 		postcss({
