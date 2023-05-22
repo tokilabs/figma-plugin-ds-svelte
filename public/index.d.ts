@@ -1,3 +1,4 @@
+/// <reference path="../ambient.d.ts" />
 import GlobalCSS from "./global.css";
 import Button from "./components/Button/index.svelte";
 import Checkbox from "./components/Checkbox/index.svelte";
