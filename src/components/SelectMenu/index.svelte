@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { createEventDispatcher } from "svelte";
-	import ClickOutside from "svelte-click-outside";
+	import ClickOutside from "./../ClickOutside/index.svelte";
 	import SelectItem from "./../SelectItem/index.svelte";
 	import SelectDivider from "./../SelectDivider/index.svelte";
 	import Icon from "./../Icon/index.svelte";
@@ -67,6 +67,16 @@
 			item.classList.remove("highlight");
 		});
 	}
+
+	function handleClickOutside(
+		event: CustomEvent<{ originalEvent: MouseEvent }>
+	): void {
+		const originalEvent = event.detail.originalEvent;
+
+		// call menuClick function with the original MouseEvent
+		menuClick(originalEvent);
+	}
+
 	//run for all menu click events
 	//this opens/closes the menu
 	function menuClick(event: MouseEvent): void {
@@ -186,7 +196,7 @@
 	}
 </script>
 
-<ClickOutside on:clickoutside={menuClick}>
+<ClickOutside on:clickoutside={handleClickOutside}>
 	<!-- The following properties were removed 
     
             {disabled}
