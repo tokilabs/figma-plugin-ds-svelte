@@ -1,4 +1,5 @@
 {
+	"include": ["src/**/*", "index.ts"],
 	"compilerOptions": {
 		"types": ["svelte", "@figma/plugin-typings"],
 		"target": "ESNext",
@@ -12,7 +13,8 @@
 		"declaration": true,
 		"isolatedModules": true,
 		"preserveWatchOutput": true,
-		"noEmit": true
+		"noEmit": true,
+		"outDir": "public"
 	},
 	"exclude": ["node_modules"]
 }

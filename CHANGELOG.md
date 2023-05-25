@@ -1,5 +1,9 @@
 # Changelog
 
+1.3.12
+
+- Changes .svg files to .svelte
+
 1.3.11
 
 - Includes compiled .ts files
