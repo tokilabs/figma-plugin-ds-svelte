@@ -1,8 +1,17 @@
 <script lang="ts">
 	let className = "";
+
+	/**
+	 * Css classes to be applied
+	 * @type {string}
+	 */
 	export { className as class };
 </script>
 
+<!-- 
+  @component Label
+  @slot - Items to be displayed inside the label 
+ -->
 <div class={className}>
 	<slot />
 </div>

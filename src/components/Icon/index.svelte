@@ -1,5 +1,7 @@
 <script lang="ts">
-	export let iconName: string | null = null; //pass svg data into this var by importing an svg in parent
+	import type { SvelteComponent } from "svelte";
+
+	export let iconName: typeof SvelteComponent | null = null;
 	export let spin = false;
 	export let iconText: string | null = null;
 	export let color = "--figma-color-icon";
@@ -17,8 +19,8 @@
 >
 	{#if iconText}
 		{iconText}
-	{:else}
-		{@html iconName}
+	{:else if iconName !== null}
+		<svelte:component this={iconName} />
 	{/if}
 </div>
 

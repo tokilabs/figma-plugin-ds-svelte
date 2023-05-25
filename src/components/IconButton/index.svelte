@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import type { SvelteComponent } from "svelte";
 	import Icon from "./../Icon/index.svelte";
 
-	export let iconName = "";
+	export let iconName: typeof SvelteComponent | null = null;
 	export let iconText: string | null = null;
 	export let selected = false;
 	export let spin = false;
@@ -10,17 +10,12 @@
 	export { className as class };
 
 	let className = "";
-
-	const handleClick = (event: MouseEvent) => {
-		const target = event.target as HTMLElement;
-		target.blur();
-	};
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <div
-	on:click={handleClick}
+	on:click
 	class:selected
 	class={className}
 	{tabindex}
