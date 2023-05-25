@@ -6,19 +6,63 @@
 	import SelectDivider from "./../SelectDivider/index.svelte";
 	import Icon from "./../Icon/index.svelte";
 
+	/**
+	 * Icon name to be displayed.
+	 * @type {string|null}
+	 */
 	export let iconName: string | null = null;
+
+	/**
+	 * Icon text to be displayed.
+	 * @type {string|null}
+	 */
 	export let iconText: string | null = null;
+
+	/**
+	 * If true, component will be disabled.
+	 * @type {boolean}
+	 */
 	export let disabled = false;
+
+	/**
+	 * If true, MacOS blink style will be applied.
+	 * @type {boolean}
+	 */
 	export let macOSBlink = false;
+
+	/**
+	 * List of items to be displayed in the select menu. Each item in the array is an object with
+	 * properties `id` (number), `label` (any), `selected` (boolean, optional), and `group` (string, optional).
+	 * @type {Array.<{id: number, label: any, selected?: boolean, group?: string}>}
+	 */
 	export let menuItems: {
 		id: number;
 		label: any;
 		selected?: boolean;
 		group?: string;
-	}[] = []; //pass data in via this prop to generate menu items
+	}[] = [];
+
+	/**
+	 * Text to be displayed when no item is selected.
+	 * @type {string}
+	 */
 	export let placeholder = "Please make a selection.";
-	export let value: { id: string | number; label: any } | null = null; //stores the current selection, note, the value will be an object from your array
-	export let showGroupLabels = false; //default prop, true will show option group labels
+
+	/**
+	 * The current selection. This should be an object from your array with properties `id` and `label`.
+	 * @type {{id: string|number, label: any}|null}
+	 */
+	export let value: { id: string | number; label: any };
+
+	/**
+	 * Show option group labels
+	 * @type {boolean}
+	 */
+	export let showGroupLabels = false;
+
+	/**
+	 * Css classes to be applied to the component.
+	 */
 	export { className as class };
 
 	const dispatch = createEventDispatcher();
@@ -35,8 +79,10 @@
 		updateSelectedAndIds();
 	});
 
-	// this function runs every time the menuItems array os updated
-	// it will auto assign ids and keep the value var updated
+	/**
+	 * This function runs every time the menuItems array is updated
+	 * it will auto assign ids and keep the value var updated
+	 */
 	function updateSelectedAndIds() {
 		if (menuItems) {
 			menuItems.forEach((item, index) => {
@@ -68,86 +114,117 @@
 		});
 	}
 
-	function handleClickOutside(
-		event: CustomEvent<{ originalEvent: MouseEvent }>
-	): void {
-		const originalEvent = event.detail.originalEvent;
-
-		// call menuClick function with the original MouseEvent
-		menuClick(originalEvent);
+	function hideMenu() {
+		(menuList as HTMLElement).classList.add("hidden");
 	}
 
-	//run for all menu click events
-	//this opens/closes the menu
+	function showMenu() {
+		(menuList as HTMLElement).classList.remove("hidden");
+	}
+
+	function setMenuTopPosition(topPos: number) {
+		(menuList as HTMLElement).style.top = -Math.abs(topPos) + "px";
+	}
+
+	function focusItem(itemId: string | number) {
+		let item = (menuList as HTMLElement).querySelector(`[itemId="${itemId}"]`);
+		(item as HTMLElement)?.focus();
+	}
+
+	function deselectItem(itemId: number) {
+		menuItems[itemId].selected = false;
+	}
+
+	function selectItem(itemId: number) {
+		menuItems[itemId].selected = true;
+		updateSelectedAndIds();
+		dispatch("change", menuItems[itemId]);
+	}
+
+	function blinkAndClose(
+		event: MouseEvent,
+		itemId: number,
+		interval: number,
+		times: number
+	) {
+		//blink the background
+		for (var i = 0; i < times; i++) {
+			setTimeout(function () {
+				(event.target as HTMLElement).classList.toggle("blink");
+			}, i * interval);
+		}
+		//delay closing the menu
+		setTimeout(function () {
+			hideMenu(); //hide the menu
+		}, interval * times + 40);
+	}
+
+	function calculateTopPosition(id: string | number) {
+		let selectedItem = (menuList as HTMLElement).querySelector(
+			`[itemId="${id}"]`
+		);
+		let parentTop = (menuList as HTMLElement).getBoundingClientRect().top;
+		let itemTop = selectedItem?.getBoundingClientRect().top;
+
+		if (itemTop !== undefined) {
+			let topPos = itemTop - parentTop - 3;
+			setMenuTopPosition(topPos);
+		}
+	}
+	function handleSelection(itemId: number): void {
+		// remove current selection if there is one
+		if (value) {
+			let currentItemId =
+				typeof value.id === "number" ? value.id : parseInt(value.id);
+			deselectItem(currentItemId);
+		}
+		selectItem(itemId);
+	}
+
+	function handleMenuButtonClick(): void {
+		let topPos = 0;
+
+		showMenu();
+		if (value) {
+			let id = value.id;
+			focusItem(id);
+
+			// calculate distance from top to position the dropdown menu
+			calculateTopPosition(id);
+		} else {
+			setMenuTopPosition(0);
+			focusItem(0);
+		}
+
+		// update size and position based on plugin UI
+		resizeAndPosition();
+	}
+
+	function handleMenuItemClick(event: MouseEvent): void {
+		// find selected item in array
+		let itemId = parseInt(
+			(event.target as HTMLElement).getAttribute("itemId") || "0"
+		);
+
+		handleSelection(itemId);
+
+		if (macOSBlink) {
+			blinkAndClose(event, itemId, 70, 4);
+		} else {
+			hideMenu(); // hide the menu
+			(menuButton as HTMLElement).classList.remove("selected"); // remove selected state from button
+		}
+	}
+
 	function menuClick(event: MouseEvent): void {
 		resetMenuProperties();
 
 		if (!event.target) {
-			(menuList as HTMLElement).classList.add("hidden");
+			hideMenu();
 		} else if ((event.target as HTMLElement).contains(menuButton as Node)) {
-			let topPos = 0;
-
-			if (value) {
-				//toggle menu
-				(menuList as HTMLElement).classList.remove("hidden");
-
-				let id = value.id;
-				let selectedItem = (menuList as HTMLElement).querySelector(
-					`[itemId="${id}"]`
-				);
-				(selectedItem as HTMLElement).focus(); //set focus to the currently selected item
-
-				// calculate distance from top so that we can position the dropdown menu
-				let parentTop = (menuList as HTMLElement).getBoundingClientRect().top;
-				let itemTop = (selectedItem as HTMLElement).getBoundingClientRect().top;
-				let topPos = itemTop - parentTop - 3;
-				(menuList as HTMLElement).style.top = -Math.abs(topPos) + "px";
-
-				//update size and position based on plugin UI
-				resizeAndPosition();
-			} else {
-				(menuList as HTMLElement).classList.remove("hidden");
-				(menuList as HTMLElement).style.top = "0px";
-				let firstItem = (menuList as HTMLElement).querySelector('[itemId="0"]');
-				(firstItem as HTMLElement).focus();
-
-				//update size and position based on plugin UI
-				resizeAndPosition();
-			}
+			handleMenuButtonClick();
 		} else if ((menuList as HTMLElement).contains(event.target as Node)) {
-			//find selected item in array
-			let itemId = parseInt(
-				(event.target as HTMLElement).getAttribute("itemId") || "0"
-			);
-
-			//remove current selection if there is one
-			if (value) {
-				let itemId =
-					typeof value.id === "number" ? value.id : parseInt(value.id);
-				menuItems[itemId].selected = false;
-			}
-			menuItems[itemId].selected = true; //select current item
-			updateSelectedAndIds();
-			dispatch("change", menuItems[itemId]);
-
-			if (macOSBlink) {
-				var x = 4;
-				var interval = 70;
-
-				//blink the background
-				for (var i = 0; i < x; i++) {
-					setTimeout(function () {
-						(event.target as HTMLElement).classList.toggle("blink");
-					}, i * interval);
-				}
-				//delay closing the menu
-				setTimeout(function () {
-					(menuList as HTMLElement).classList.add("hidden"); //hide the menu
-				}, interval * x + 40);
-			} else {
-				(menuList as HTMLElement).classList.add("hidden"); //hide the menu
-				(menuButton as HTMLElement).classList.remove("selected"); //remove selected state from button
-			}
+			handleMenuItemClick(event);
 		}
 	}
 
@@ -196,8 +273,8 @@
 	}
 </script>
 
-<ClickOutside on:clickoutside={handleClickOutside}>
-	<!-- The following properties were removed 
+<!-- <ClickOutside on:clickoutside={handleClickOutside}> -->
+<!-- The following properties were removed 
     
             {disabled}
             {placeholder}
@@ -205,7 +282,8 @@
             {macOSBlink}
 
 -->
-
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<div on:click={menuClick}>
 	<div
 		on:change
 		on:focus
@@ -288,7 +366,9 @@
 			{/if}
 		</ul>
 	</div>
-</ClickOutside>
+</div>
+
+<!-- </ClickOutside> -->
 
 <style>
 	.wrapper {

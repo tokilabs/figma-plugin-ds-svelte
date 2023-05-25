@@ -11,8 +11,8 @@
 <script lang="ts">
 	import { getContext, onMount } from "svelte";
 	import Icon from "./../Icon/index.svelte";
-	import CaretRight from "./../../icons/caret-right.svg";
-	import CaretDown from "./../../icons/caret-down.svg";
+	import CaretRight from "./../../icons/caret-right.svelte";
+	import CaretDown from "./../../icons/caret-down.svelte";
 
 	export let uniqueId =
 		"disclosureItem--" + (Math.random() * 10000000).toFixed(0).toString();
