@@ -11,7 +11,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"format": "prettier --write --plugin-search-dir=. ./**/*.html",
 		"prepublish": "npm run build && tsc ./src/index.ts",
-		"publish:npm": "npm publish --access public"
+		"publish": "npm publish --access public"
 	},
 	"devDependencies": {
 		"@figma/plugin-typings": "^1.64.0",

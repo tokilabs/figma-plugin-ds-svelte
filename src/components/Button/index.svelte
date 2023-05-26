@@ -1,24 +1,26 @@
 <script lang="ts">
-	export let variant: string = "primary";
+	export let variant: "primary" | "secondary" | "tertiary" = "primary";
+
+	const variantStyles = {
+		primary: "bg-brand text-onbrand",
+		secondary: "bg-white text-brand",
+		tertiary: "bg-white text-brand",
+	};
+
 	export let disabled: boolean = false;
 	export let destructive: boolean = false;
 	export let type: "button" | "submit" | "reset" | null | undefined = "button";
 
 	let className: string = "";
 	export { className as class };
-
-	const handleClick = (event: MouseEvent) => {
-		const target = event.target as HTMLElement;
-		target.blur();
-	};
 </script>
 
 <button
 	{type}
-	on:click={handleClick}
-	class="{variant} {className} {destructive ? 'destructive' : ''} {disabled
-		? 'disabled'
-		: ''}"
+	on:click
+	class="{variantStyles[variant]} {className} {destructive
+		? 'destructive'
+		: ''} {disabled ? 'disabled' : ''} border-t"
 	{disabled}
 >
 	<slot />
@@ -28,9 +30,13 @@
 	button {
 		display: flex;
 		align-items: center;
+		text-decoration: none;
+		outline: none;
+		border: 2px solid transparent;
+		user-select: none;
+		flex-shrink: 0;
 		border-radius: var(--border-radius-large);
 		color: var(--figma-color-text-onbrand);
-		flex-shrink: 0;
 		font-family: var(--font-stack);
 		font-size: var(--font-size-xsmall);
 		font-weight: var(--font-weight-medium);
@@ -38,10 +44,6 @@
 		line-height: var(--font-line-height);
 		height: var(--size-medium);
 		padding: 0 var(--size-xsmall) 0 var(--size-xsmall);
-		text-decoration: none;
-		outline: none;
-		border: 2px solid transparent;
-		user-select: none;
 	}
 
 	/* Primary styles */
