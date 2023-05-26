@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from "svelte";
+	import { SvelteComponent, onMount } from "svelte";
 	import { createEventDispatcher } from "svelte";
 	import ClickOutside from "./../ClickOutside/index.svelte";
 	import SelectItem from "./../SelectItem/index.svelte";
@@ -8,9 +8,9 @@
 
 	/**
 	 * Icon name to be displayed.
-	 * @type {string|null}
+	 * @type {typeof SvelteComponent|null}
 	 */
-	export let iconName: string | null = null;
+	export let iconName: typeof SvelteComponent | null = null;
 
 	/**
 	 * Icon text to be displayed.
@@ -38,6 +38,7 @@
 	export let menuItems: {
 		id: number;
 		label: any;
+		value: any;
 		selected?: boolean;
 		group?: string;
 	}[] = [];

@@ -2,14 +2,15 @@
 	//This is a simple app playground to test components and their markup
 
 	// Global CSS
-	import style from "../global.css?inline";
+	import "../figma_app.min.css?inline";
+	import "../global.css?inline";
 
 	//Components
 	import Button from "../lib/components/Button/index.svelte";
 	import Checkbox from "../lib/components/Checkbox/index.svelte";
 	import Switch from "../lib/components/Switch/index.svelte";
-	import Disclosure from "../lib/components/Disclosure/index.svelte";
-	import DisclosureItem from "../lib/components/DisclosureItem/index.svelte";
+	// import Disclosure from "../lib/components/Disclosure/index.svelte";
+	// import DisclosureItem from "../lib/components/DisclosureItem/index.svelte";
 	import Icon from "../lib/components/Icon/index.svelte";
 	import IconButton from "../lib/components/IconButton/index.svelte";
 	import Input from "../lib/components/Input/index.svelte";
@@ -17,7 +18,7 @@
 	import OnboardingTip from "../lib/components/OnboardingTip/index.svelte";
 	import Radio from "../lib/components/Radio/index.svelte";
 	import Section from "../lib/components/Section/index.svelte";
-	import SelectMenu from "../lib/components/SelectMenu/index.svelte";
+	// import SelectMenu from "../lib/components/SelectMenu/index.svelte";
 	import Textarea from "../lib/components/Textarea/index.svelte";
 	import Type from "../lib/components/Type/index.svelte";
 
@@ -119,38 +120,152 @@
 	//this function dynamically updates the first empty select menu example with data
 	function populateMenu() {
 		menuItemsExample0 = [
-			{ value: "item1", label: "Menu item 1", group: null, selected: true },
-			{ value: "item2", label: "Menu item 2 ", group: null, selected: false }
+			{
+				id: 1,
+				value: "item1",
+				label: "Menu item 1",
+				group: null,
+				selected: true
+			},
+			{
+				id: 2,
+				value: "item2",
+				label: "Menu item 2 ",
+				group: null,
+				selected: false
+			}
 		];
 	}
 
 	let menuItemsExample1 = [
-		{ value: "item1", label: "Menu item 1", group: null, selected: false },
-		{ value: "item2", label: "Menu item 2 ", group: null, selected: false },
-		{ value: "item3", label: "Menu item 3", group: null, selected: false },
-		{ value: "item4", label: "Menu item 4", group: null, selected: false }
+		{
+			id: 1,
+			value: "item1",
+			label: "Menu item 1",
+			group: null,
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item2",
+			label: "Menu item 2 ",
+			group: null,
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item3",
+			label: "Menu item 3",
+			group: null,
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item4",
+			label: "Menu item 4",
+			group: null,
+			selected: false
+		}
 	];
 	//example with an initial selection
 	let menuItemsExample2 = [
-		{ value: "item1", label: "Menu item 1", group: null, selected: false },
-		{ value: "item2", label: "Menu item 2 ", group: null, selected: true },
-		{ value: "item3", label: "Menu item 3", group: null, selected: false },
-		{ value: "item4", label: "Menu item 4", group: null, selected: false }
+		{
+			id: 1,
+			value: "item1",
+			label: "Menu item 1",
+			group: null,
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item2",
+			label: "Menu item 2 ",
+			group: null,
+			selected: true
+		},
+		{
+			id: 1,
+			value: "item3",
+			label: "Menu item 3",
+			group: null,
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item4",
+			label: "Menu item 4",
+			group: null,
+			selected: false
+		}
 	];
 	//example with option groups (we will show the labels with a prop)
 	let menuItemsExample3 = [
-		{ value: "item1", label: "Granny Smith", group: "Apples", selected: false },
-		{ value: "item2", label: "Honey Crisp ", group: "Apples", selected: true },
-		{ value: "item3", label: "Blood", group: "Oranges", selected: false },
-		{ value: "item4", label: "Valencia", group: "Oranges", selected: false }
+		{
+			id: 1,
+			value: "item1",
+			label: "Granny Smith",
+			group: "Apples",
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item2",
+			label: "Honey Crisp ",
+			group: "Apples",
+			selected: true
+		},
+		{
+			id: 1,
+			value: "item3",
+			label: "Blood",
+			group: "Oranges",
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item4",
+			label: "Valencia",
+			group: "Oranges",
+			selected: false
+		}
 	];
 	//example with an initial selection and option groups
 	let menuItemsExample4 = [
-		{ value: "item1", label: "Passthrough", group: "group1", selected: true },
-		{ value: "item2", label: "Normal ", group: "group1", selected: false },
-		{ value: "item3", label: "Darken", group: "group2", selected: false },
-		{ value: "item4", label: "Multiply", group: "group2", selected: false },
-		{ value: "item4", label: "Color Burn", group: "group2", selected: false }
+		{
+			id: 1,
+			value: "item1",
+			label: "Passthrough",
+			group: "group1",
+			selected: true
+		},
+		{
+			id: 1,
+			value: "item2",
+			label: "Normal ",
+			group: "group1",
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item3",
+			label: "Darken",
+			group: "group2",
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item4",
+			label: "Multiply",
+			group: "group2",
+			selected: false
+		},
+		{
+			id: 1,
+			value: "item4",
+			label: "Color Burn",
+			group: "group2",
+			selected: false
+		}
 	];
 </script>
 
@@ -279,14 +394,14 @@
 
 	<section>
 		<h2>Disclosure panels</h2>
-		<Disclosure>
+		<!-- <Disclosure>
 			<DisclosureItem
 				title="Item 1"
 				open>Content here</DisclosureItem
 			>
 			<DisclosureItem title="Item 2">Content here</DisclosureItem>
 			<DisclosureItem title="Item 3">Content here</DisclosureItem>
-		</Disclosure>
+		</Disclosure> -->
 	</section>
 
 	<section>
@@ -486,7 +601,7 @@
 		<Input
 			value="This is an invalid example"
 			class="mb-xsmall"
-			invalid="true"
+			invalid={true}
 		/>
 		<Input
 			iconName={IconVisible}
@@ -516,10 +631,10 @@
 	<section>
 		<h2>Select Menu</h2>
 		<div class="flex row">
-			<SelectMenu
+			<!-- <SelectMenu
 				bind:menuItems={menuItemsExample0}
 				class="mb-xsmall"
-			/>
+			/> -->
 			<Button
 				variant="secondary"
 				class="mr-xxsmall mb-xsmall"
@@ -527,7 +642,7 @@
 			>
 		</div>
 
-		<SelectMenu
+		<!-- <SelectMenu
 			placeholder="Please make a selection"
 			bind:menuItems={menuItemsExample1}
 			class="mb-xsmall"
@@ -544,7 +659,7 @@
 		<SelectMenu
 			bind:menuItems={menuItemsExample4}
 			iconName={IconBlend}
-		/>
+		/> -->
 	</section>
 
 	<section>

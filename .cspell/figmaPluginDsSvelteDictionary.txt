@@ -4,6 +4,7 @@ figma
 onbrand
 Parens
 publint
+tokilabs
 xlarge
 xsmall
 xxsmall

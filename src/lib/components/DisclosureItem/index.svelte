@@ -30,8 +30,8 @@
 	}
 </script>
 
+<!-- {open} -->
 <li
-	{open}
 	{title}
 	id={uniqueId}
 	class:expanded
