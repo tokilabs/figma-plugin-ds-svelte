@@ -4,7 +4,7 @@
 	const variantStyles = {
 		primary: "bg-brand text-onbrand",
 		secondary: "bg-white text-brand",
-		tertiary: "bg-white text-brand",
+		tertiary: "bg-white text-brand"
 	};
 
 	export let disabled: boolean = false;

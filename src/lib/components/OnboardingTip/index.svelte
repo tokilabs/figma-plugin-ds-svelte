@@ -1,9 +1,10 @@
 <script lang="ts">
+	import type { SvelteComponent } from "svelte";
 	import Icon from "./../Icon/index.svelte";
 
 	export let spin = false;
 	export let color: string = "black8";
-	export let iconName: string | null = null;
+	export let iconName: typeof SvelteComponent | null = null;
 	export let iconText: string | null = null;
 	export { className as class };
 

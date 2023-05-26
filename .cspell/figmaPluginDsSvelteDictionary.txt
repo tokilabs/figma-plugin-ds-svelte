@@ -1,1 +1,10 @@
 # Custom Dictionary Words
+clickoutside
+figma
+onbrand
+Parens
+publint
+xlarge
+xsmall
+xxsmall
+xxxsmall

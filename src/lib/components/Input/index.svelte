@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { SvelteComponent } from "svelte";
 	import Icon from "./../Icon/index.svelte";
 
 	export let id: string | null = null;
@@ -7,7 +8,7 @@
 	export let iconText: string | null = null;
 	export let borders: boolean = false;
 	export let disabled: boolean = false;
-	export let iconName: string | null = null;
+	export let iconName: typeof SvelteComponent | null = null;
 	export let spin: boolean = false;
 	export let invalid: boolean = false;
 	export let errorMessage: string = "Error message";

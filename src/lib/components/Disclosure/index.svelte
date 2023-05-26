@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher, setContext, onMount } from "svelte";
-	import { Writable, writable } from "svelte/store";
+	import { type Writable, writable } from "svelte/store";
 	import DisclosureItem, { disclosure } from "./../DisclosureItem/index.svelte";
 
 	const dispatch = createEventDispatcher();

@@ -4,7 +4,7 @@
 >
 	export const disclosure = {
 		clickHandler: null,
-		selected: null,
+		selected: null
 	};
 </script>
 
