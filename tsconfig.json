@@ -9,6 +9,16 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"moduleResolution": "NodeNext"
+		"moduleResolution": "NodeNext",
+
+		"types": ["svelte", "@figma/plugin-typings"],
+		"target": "ESNext",
+		"module": "ESNext",
+		"lib": ["es2020", "DOM"],
+		"declaration": true,
+		"isolatedModules": true,
+		"preserveWatchOutput": true,
+		"noEmit": true,
+		"outDir": "public"
 	}
 }

@@ -1,0 +1,10 @@
+{
+	"cSpell.customDictionaries": {
+		"custom-dictionary-workspace": {
+			"name": "Figma Ds Dictionary",
+			"path": "${workspaceFolder:figma-plugin-ds-svelte}/.cspell/figmaPluginDsSvelteDictionary.txt",
+			"addWords": true,
+			"scope": "workspace"
+		}
+	}
+}
