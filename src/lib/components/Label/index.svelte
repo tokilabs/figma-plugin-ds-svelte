@@ -1,34 +1,29 @@
-<script lang="ts">
-	let className = "";
+<script>
 
-	/**
-	 * Css classes to be applied
-	 * @type {string}
-	 */
-	export { className as class };
+    export { className as class };
+    let className = '';
+
 </script>
 
-<!-- 
-  @component Label
-  @slot - Items to be displayed inside the label 
- -->
-<div class={className}>
-	<slot />
+<div class="{className}">
+    <slot></slot>
 </div>
 
 <style>
-	div {
-		font-size: var(--font-size-xsmall);
-		font-weight: var(--font-weight-normal);
-		letter-spacing: var(--font-letter-spacing-pos-xsmall);
-		line-height: var(--line-height);
-		color: var(--figma-color-text-secondary);
-		height: var(--size-medium);
-		width: 100%;
-		display: flex;
-		align-items: center;
-		cursor: default;
-		user-select: none;
-		padding: 0 calc(var(--size-xxsmall) / 2) 0 var(--size-xxsmall);
-	}
+
+    div {
+        font-size: var(--font-size-xsmall);
+        font-weight: var(--font-weight-normal);
+        letter-spacing: var( --font-letter-spacing-pos-xsmall);
+        line-height: var(--line-height);
+        color: var(--figma-color-text-secondary);
+        height: var(--size-medium);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        cursor: default;
+        user-select: none;
+        padding: 0 calc(var(--size-xxsmall) / 2) 0 var(--size-xxsmall);
+    }
+
 </style>

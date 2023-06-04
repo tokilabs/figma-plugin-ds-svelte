@@ -1,49 +1,47 @@
-<script lang="ts">
-	import Icon from "./../Icon/index.svelte";
+<script>
+    import Icon from './../Icon/index.svelte';
 
-	export let spin = false;
-	export let color: string = "black8";
-	export let iconName: string | null = null;
-	export let iconText: string | null = null;
-	export { className as class };
+    export let spin = false;
+    export let color = "black8";
+    export let iconName = null;
+    export let iconText = null;
+    export { className as class };
 
-	let className: string = "";
+    let className = '';
+
 </script>
 
 <div class="onboarding-tip {className}">
-	<div class="icon">
-		<Icon
-			{iconName}
-			{iconText}
-			{color}
-			{spin}
-		/>
-	</div>
-	<p>
-		<slot />
-	</p>
+    <div class="icon">
+        <Icon {iconName} {iconText} {color} {spin}/>
+    </div>
+    <p>
+        <slot></slot>
+    </p>
 </div>
 
 <style>
-	.onboarding-tip {
-		display: flex;
-		align-items: top;
-		padding: 0 var(--size-xsmall) 0 0;
-	}
 
-	.icon {
-		width: var(--size-medium);
-		height: var(--size-medium);
-		margin-right: var(--size-xxsmall);
-	}
+    .onboarding-tip {
+        display: flex;
+        align-items: top;
+        padding: 0 var(--size-xsmall) 0 0;
+    }
 
-	p {
-		padding: var(--size-xxsmall) 0 var(--size-xxsmall) 0;
-		font-size: var(--font-size-xsmall);
-		font-weight: var(--font-weight-normal);
-		letter-spacing: var(--font-letter-spacing-pos-xsmall);
-		line-height: var(--line-height);
-		color: var(--figma-color-text);
-		margin: 0;
-	}
+    .icon {
+        width: var(--size-medium);
+        height: var(--size-medium);
+        margin-right: var(--size-xxsmall);
+    }
+
+    p   {
+        padding: var(--size-xxsmall) 0 var(--size-xxsmall) 0;
+        font-size: var(--font-size-xsmall);
+        font-weight: var(--font-weight-normal);
+        letter-spacing: var( --font-letter-spacing-pos-xsmall);
+        line-height: var(--line-height);
+        color: var(--figma-color-text);
+        margin: 0;
+    }
+
 </style>

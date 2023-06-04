@@ -1,57 +1,58 @@
-<script lang="ts">
-	import type { SvelteComponent } from "svelte";
+<script>
+    export let iconName = null; //pass svg data into this var by importing an svg in parent
+    export let spin = false;
+    export let iconText = null;
+    export let color = '--figma-color-icon';
+    export { className as class };
 
-	export let iconName: typeof SvelteComponent | null = null;
-	export let spin = false;
-	export let iconText: string | null = null;
-	export let color = "--figma-color-icon";
-	export { className as class };
+    let className = '';
 
-	let className = "";
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-	class:spin
-	class="icon-component {className}"
-	style="color: var({color}); fill: var({color})"
-	on:click
->
-	{#if iconText}
-		{iconText}
-	{:else if iconName !== null}
-		<svelte:component this={iconName} />
-	{/if}
+<div 
+    class:spin={spin}
+    {iconText}
+    {iconName} 
+    class="icon-component {className}"
+    style="color: var({color}); fill: var({color})"
+    on:click>
+    {#if iconText}
+        {iconText}
+    {:else}
+        {@html iconName}
+    {/if}
 </div>
 
 <style>
-	.icon-component {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		cursor: default;
-		width: var(--size-medium);
-		height: var(--size-medium);
-		font-family: var(--font-stack);
-		font-size: var(--font-size-xsmall);
-		user-select: none;
-	}
 
-	.spin {
-		animation: rotating 1s linear infinite;
-	}
+    .icon-component {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: default;
+        width: var(--size-medium);
+        height: var(--size-medium);
+        font-family: var(--font-stack);
+        font-size: var(--font-size-xsmall);
+        user-select: none;
+    }
 
-	@keyframes rotating {
-		from {
-			transform: rotate(0deg);
-		}
-		to {
-			transform: rotate(360deg);
-		}
-	}
+    .spin {
+        animation: rotating 1.0s linear infinite;
+    }
 
-	:global(.icon-component *) {
-		fill: inherit;
-		color: inherit;
-	}
+    @keyframes rotating {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    :global(.icon-component *) {
+        fill: inherit;
+        color: inherit;
+    }
+
 </style>

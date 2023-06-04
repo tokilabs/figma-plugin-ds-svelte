@@ -1,6 +1,6 @@
-<script lang="ts">
+<script>
     
-    export let itemId: number;
+    export let itemId;
     export let selected = false;
     export { className as class };
 
@@ -8,9 +8,7 @@
 
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-<li id={itemId.toString()} tabindex={itemId+1} class:highlight={selected} class={className} on:mouseenter on:click>
+<li {itemId} tabindex={itemId+1} class:highlight={selected} class={className} on:mouseenter on:click>
     <div class="icon" class:selected={selected}>
     </div>
     <div class="label"><slot /></div>
