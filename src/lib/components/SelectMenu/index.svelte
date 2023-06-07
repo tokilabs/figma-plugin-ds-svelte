@@ -44,10 +44,8 @@
         }
         //set placeholder
         if (menuItems.length <= 0) {
-            placeholder = 'There are no items to select';
             disabled = true;
         } else {
-            placeholder = 'Please make a selection';
             disabled = false;
         }
     }
