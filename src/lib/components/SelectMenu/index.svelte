@@ -16,7 +16,6 @@
 	import SelectItem from './../SelectItem/index.svelte';
 	import SelectDivider from './../SelectDivider/index.svelte';
 	import Icon from './../Icon/index.svelte';
-	import type { MenuItem } from './index.svelte'; // Import the MenuItem type
 
 	// Define the exported variables with their types
 	export let iconName: string | null = null;
@@ -27,7 +26,8 @@
 	export let placeholder: string = 'Please make a selection.';
 	export let value: MenuItem | null = null; // And here
 	export let showGroupLabels: boolean = false;
-	export let className: string;
+	let className: string = '';
+	export { className as class };
 
 	const dispatch = createEventDispatcher();
 	let groups = checkGroups();
@@ -83,7 +83,9 @@
 
 	// Menu highlight function on the selected menu item
 	function removeHighlight(event: Event): void {
-		let items = Array.from((event.target as HTMLElement).parentNode.children);
+		let items = Array.from(
+			(event.target as HTMLElement)?.parentNode?.children || []
+		) as HTMLElement[];
 		items.forEach((item: HTMLElement) => {
 			item.blur();
 			item.classList.remove('highlight');
@@ -206,6 +208,7 @@
 		on:focus
 		on:blur
 		bind:this={menuWrapper}
+		{disabled}
 		class:disabled
 		class:placeholder
 		class:showGroupLabels
