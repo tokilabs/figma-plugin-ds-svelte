@@ -1,58 +1,84 @@
-<script>
-    export let iconName = null; //pass svg data into this var by importing an svg in parent
-    export let spin = false;
-    export let iconText = null;
-    export let color = '--figma-color-icon';
-    export { className as class };
+<script lang="ts">
+	/**
+	 * iconName: SVG data string that gets inserted into the icon component.
+	 * If you have an SVG you'd like to use, import it in the parent component
+	 * and pass the data into this prop.
+	 */
+	export let iconName: string | null = null;
 
-    let className = '';
+	/**
+	 * spin: A boolean that, when true, applies a spinning animation to the icon.
+	 */
+	export let spin: boolean = false;
 
+	/**
+	 * iconText: A string that will be displayed as the icon's text.
+	 * If this prop is provided, it will be used instead of the iconName prop.
+	 */
+	export let iconText: string | null = null;
+
+	/**
+	 * color: The color of the icon. This should be a CSS color variable.
+	 */
+	export let color: string = '--figma-color-icon';
+
+	/**
+	 * className: Additional CSS classes that can be applied to the icon.
+	 */
+	let className: string = '';
+	export { className as class };
 </script>
 
-<div 
-    class:spin={spin}
-    {iconText}
-    {iconName} 
-    class="icon-component {className}"
-    style="color: var({color}); fill: var({color})"
-    on:click>
-    {#if iconText}
-        {iconText}
-    {:else}
-        {@html iconName}
-    {/if}
+<!-- 
+  This component renders an icon, which can either be represented by SVG data (iconName) 
+  or text (iconText). If both are provided, the text will be used. The icon's color 
+  is controlled by the 'color' prop, and additional CSS classes can be applied using 
+  the 'className' prop. If the 'spin' prop is true, a spinning animation will be applied to the icon.
+-->
+<div
+	class:spin
+	{iconText}
+	{iconName}
+	class="icon-component {className}"
+	style="color: var({color}); fill: var({color})"
+	on:click
+	on:keydown
+>
+	{#if iconText}
+		{iconText}
+	{:else}
+		{@html iconName}
+	{/if}
 </div>
 
 <style>
+	.icon-component {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: default;
+		width: var(--size-medium);
+		height: var(--size-medium);
+		font-family: var(--font-stack);
+		font-size: var(--font-size-xsmall);
+		user-select: none;
+	}
 
-    .icon-component {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: default;
-        width: var(--size-medium);
-        height: var(--size-medium);
-        font-family: var(--font-stack);
-        font-size: var(--font-size-xsmall);
-        user-select: none;
-    }
+	.spin {
+		animation: rotating 1s linear infinite;
+	}
 
-    .spin {
-        animation: rotating 1.0s linear infinite;
-    }
+	@keyframes rotating {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
 
-    @keyframes rotating {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    :global(.icon-component *) {
-        fill: inherit;
-        color: inherit;
-    }
-
+	:global(.icon-component *) {
+		fill: inherit;
+		color: inherit;
+	}
 </style>
