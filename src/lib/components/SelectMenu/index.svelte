@@ -95,6 +95,7 @@
 	// Run for all menu click events
 	// This opens/closes the menu
 	function menuClick(event: MouseEvent): void {
+		if (disabled) return;
 		resetMenuProperties();
 
 		if (!event.target) {
@@ -275,9 +276,10 @@
 	</div>
 </ClickOutside>
 
-<style>
+<style lang="scss">
 	.wrapper {
 		position: relative;
+		overflow: hidden;
 	}
 
 	button {
@@ -286,51 +288,64 @@
 		border: 1px solid transparent;
 		height: 30px;
 		width: 100%;
-		margin: 1px 0 1px 0;
-		padding: 4px var(--size-xxsmall) 0px var(--size-xxsmall);
+		margin: 1px 0;
+		padding: 4px var(--size-xxsmall) 0;
+		overflow: hidden;
 		overflow-y: hidden;
 		border-radius: var(--border-radius-small);
 		background-color: var(--white);
-	}
-	button:hover,
-	button:active {
-		border-color: var(--black1);
-	}
-	button:hover .placeholder {
-		color: var(--black8);
-	}
-	button:hover .caret svg path,
-	button:focus .caret svg path {
-		fill: var(--black8);
-	}
-	button:hover .caret,
-	button:focus .caret {
-		margin-left: auto;
-	}
-	button:focus {
-		border: 1px solid var(--blue);
-		outline: 1px solid var(--blue);
-		outline-offset: -2px;
-		padding-left: calc(var(--size-xxsmall) + 1px);
-	}
-	button:focus .placeholder {
-		color: var(--black8);
-	}
-	button:disabled .label {
-		color: var(--black3);
-	}
-	button:disabled:hover {
-		justify-content: flex-start;
-		border-color: transparent;
-	}
-	button:disabled:hover .placeholder {
-		color: var(--black3);
-	}
-	button:disabled:hover .caret svg path {
-		fill: var(--black3);
-	}
-	button * {
-		pointer-events: none;
+
+		&:hover,
+		&:active {
+			border-color: var(--black1);
+
+			.placeholder {
+				color: var(--black8);
+			}
+
+			.caret svg path {
+				fill: var(--black8);
+			}
+
+			.caret {
+				margin-left: auto;
+			}
+		}
+
+		&:focus {
+			border: 1px solid var(--blue);
+			outline: 1px solid var(--blue);
+			outline-offset: -2px;
+			padding-left: calc(var(--size-xxsmall) + 1px);
+
+			.placeholder {
+				color: var(--black8);
+			}
+		}
+
+		&:disabled {
+			.label {
+				color: var(--black3);
+			}
+
+			&:hover {
+				justify-content: flex-start;
+				border-color: transparent;
+
+				.placeholder {
+					color: var(--black3);
+				}
+
+				.caret svg path {
+					fill: var(--black3);
+				}
+			}
+		}
+
+		* {
+			pointer-events: none;
+			overflow: hidden;
+		}
 	}
 
 	.label,
@@ -343,7 +358,7 @@
 		margin-right: 6px;
 		margin-top: -3px;
 		white-space: nowrap;
-		overflow-x: hidden;
+		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 
@@ -354,16 +369,14 @@
 	.caret {
 		display: block;
 		margin-top: -1px;
-	}
 
-	.caret svg path {
-		fill: var(--figma-color-icon-tertiary);
+		svg path {
+			fill: var(--figma-color-icon-tertiary);
+		}
 	}
 
 	.icon {
-		margin-left: -8px;
-		margin-top: -2px;
-		margin-right: 0;
+		margin: -2px 0 0 -8px;
 	}
 
 	.menu {
@@ -373,29 +386,31 @@
 		width: 100%;
 		background-color: var(--color-bg-menu);
 		box-shadow: var(--shadow-hud);
-		padding: var(--size-xxsmall) 0 var(--size-xxsmall) 0;
+		padding: var(--size-xxsmall) 0;
 		border-radius: var(--border-radius-small);
 		margin: 0;
 		z-index: 50;
-		overflow-x: overlay;
-		overflow-y: auto;
-	}
-	.menu::-webkit-scrollbar {
-		width: 12px;
-		background-color: transparent;
-		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
-		background-repeat: repeat;
-		background-size: 100% auto;
-	}
-	.menu::-webkit-scrollbar-track {
-		border: solid 3px transparent;
-		-webkit-box-shadow: inset 0 0 10px 10px transparent;
-		box-shadow: inset 0 0 10px 10px transparent;
-	}
-	.menu::-webkit-scrollbar-thumb {
-		border: solid 3px transparent;
-		border-radius: 6px;
-		-webkit-box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
-		box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
+		overflow: hidden;
+
+		&::-webkit-scrollbar {
+			width: 12px;
+			background-color: transparent;
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
+			background-repeat: repeat;
+			background-size: 100% auto;
+		}
+
+		&::-webkit-scrollbar-track {
+			border: solid 3px transparent;
+			-webkit-box-shadow: inset 0 0 10px 10px transparent;
+			box-shadow: inset 0 0 10px 10px transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			border: solid 3px transparent;
+			border-radius: 6px;
+			-webkit-box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
+			box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
+		}
 	}
 </style>
