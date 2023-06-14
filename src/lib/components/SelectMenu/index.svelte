@@ -17,45 +17,44 @@
 	import SelectDivider from './../SelectDivider/index.svelte';
 	import Icon from './../Icon/index.svelte';
 
-	// Define the exported variables with their types
 	export let iconName: string | null = null;
 	export let iconText: string | null = null;
 	export let disabled: boolean = false;
 	export let macOSBlink: boolean = false;
-	export let menuItems: MenuItem[] = []; // Use the MenuItem type here
+	export let menuItems: MenuItem[] = [];
 	export let placeholder: string = 'Please make a selection.';
-	export let value: MenuItem | null = null; // And here
+	export let selectedItem: MenuItem | null = null;
 	export let showGroupLabels: boolean = false;
 	let className: string = '';
 	export { className as class };
 
 	const dispatch = createEventDispatcher();
-	let groups = checkGroups();
+	// let groups = checkGroups();
 	let menuWrapper: HTMLElement;
 	let menuButton: HTMLElement;
 	let menuList: HTMLElement;
-
-	//FUNCTIONS
 
 	// Define the onMount function
 	onMount(async () => {
 		updateSelectedAndIds();
 	});
 
-	// This function runs every time the menuItems array is updated
-	// it will auto assign ids and keep the value var updated
 	function updateSelectedAndIds(): void {
+		updateSelection();
+		updateDisabledState();
+	}
+
+	function updateSelection() {
 		if (menuItems) {
-			menuItems.forEach((item, index) => {
-				// Update id
-				item.id = index.toString(); // As id is a string type in MenuItem
-				// Update selection
+			menuItems.forEach((item) => {
 				if (item.selected === true) {
-					value = item;
+					selectedItem = item;
 				}
 			});
 		}
-		// Set placeholder
+	}
+
+	function updateDisabledState() {
 		if (menuItems.length <= 0) {
 			disabled = true;
 		} else {
@@ -63,7 +62,6 @@
 		}
 	}
 
-	// Determine if option groups are present
 	function checkGroups(): boolean {
 		let groupCount = 0;
 		if (menuItems) {
@@ -72,16 +70,11 @@
 					groupCount++;
 				}
 			});
-			if (groupCount === menuItems.length) {
-				return true;
-			} else {
-				return false;
-			}
+			return groupCount === menuItems.length;
 		}
 		return false;
 	}
 
-	// Menu highlight function on the selected menu item
 	function removeHighlight(event: Event): void {
 		let items = Array.from(
 			(event.target as HTMLElement)?.parentNode?.children || []
@@ -92,91 +85,125 @@
 		});
 	}
 
-	// Run for all menu click events
-	// This opens/closes the menu
 	function menuClick(event: MouseEvent): void {
-		if (disabled) return;
+		if (disabled) {
+			return;
+		}
 		resetMenuProperties();
 
 		if (!event.target) {
-			menuList.classList.add('hidden');
+			hideMenu();
 		} else if ((event.target as Node).contains(menuButton)) {
-			let topPos = 0;
-
-			if (value) {
-				// Toggle menu
-				menuList.classList.remove('hidden');
-
-				let id = value.id;
-				let selectedItem = menuList.querySelector('[itemId="' + id + '"]');
-				(selectedItem as HTMLElement).focus(); // Set focus to the currently selected item
-
-				// Calculate distance from top so that we can position the dropdown menu
-				let parentTop = menuList.getBoundingClientRect().top;
-				let itemTop = (selectedItem as HTMLElement).getBoundingClientRect().top;
-				topPos = itemTop - parentTop - 3;
-				menuList.style.top = -Math.abs(topPos) + 'px';
-
-				// Update size and position based on plugin UI
-				resizeAndPosition();
-			} else {
-				menuList.classList.remove('hidden');
-				menuList.style.top = '0px';
-				let firstItem = menuList.querySelector('[itemId="0"]');
-				(firstItem as HTMLElement).focus();
-
-				// Update size and position based on plugin UI
-				resizeAndPosition();
-			}
+			handleMenuButtonClick(event);
 		} else if (menuList.contains(event.target as Node)) {
-			// Find selected item in array
-			let itemId = parseInt((event.target as HTMLElement).getAttribute('itemId') as string);
+			handleMenuItemClick(event);
+		}
+	}
 
-			// Remove current selection if there is one
-			if (value) {
-				menuItems[value.id].selected = false;
-			}
-			menuItems[itemId].selected = true; // Select current item
-			updateSelectedAndIds();
-			dispatch('change', menuItems[itemId]);
+	function hideMenu() {
+		menuList.classList.add('hidden');
+	}
 
-			if (macOSBlink) {
-				var x = 4;
-				var interval = 70;
+	function handleMenuButtonClick(event: MouseEvent): void {
+		if (selectedItem) {
+			showMenuForSelectedItem();
+		} else {
+			showMenuForFirstItem();
+		}
+	}
 
-				// Blink the background
-				for (var i = 0; i < x; i++) {
-					setTimeout(function () {
-						(event.target as HTMLElement).classList.toggle('blink');
-					}, i * interval);
-				}
-				// Delay closing the menu
-				setTimeout(function () {
-					menuList.classList.add('hidden'); // Hide the menu
-				}, interval * x + 40);
-			} else {
-				menuList.classList.add('hidden'); // Hide the menu
-				menuButton.classList.remove('selected'); // Remove selected state from button
+	function showMenuForSelectedItem(): void {
+		menuList.classList.remove('hidden');
+
+		if (selectedItem) {
+			let itemIndex = menuItems.indexOf(selectedItem);
+			let selectedItemElement = menuList.children[itemIndex];
+			(selectedItemElement as HTMLElement).focus(); // Set focus to the currently selected item
+
+			// Calculate distance from top so that we can position the dropdown menu
+			let parentTop = menuList.getBoundingClientRect().top;
+			let itemTop = (selectedItemElement as HTMLElement).getBoundingClientRect().top;
+			let topPos = itemTop - parentTop - 3;
+			menuList.style.top = -Math.abs(topPos) + 'px';
+
+			// Update size and position based on plugin UI
+			resizeAndPosition();
+		}
+	}
+
+	function showMenuForFirstItem(): void {
+		menuList.classList.remove('hidden');
+		menuList.style.top = '0px';
+		let firstItem = menuList.querySelector(':first-child');
+		if (firstItem) {
+			(firstItem as HTMLElement).focus();
+		}
+
+		// Update size and position based on plugin UI
+		resizeAndPosition();
+	}
+
+	function handleMenuItemClick(event: MouseEvent): void {
+		// Find selected item in array
+		let itemIndex = Array.from(menuList.children).indexOf(event.target as HTMLElement);
+
+		// Remove current selection if there is one
+		removeCurrentSelection();
+
+		menuItems[itemIndex].selected = true; // Select current item
+		updateSelectedAndIds();
+		dispatch('change', menuItems[itemIndex]);
+
+		if (macOSBlink) {
+			blinkBackground(event);
+		} else {
+			hideMenu();
+			menuButton.classList.remove('selected'); // Remove selected state from button
+		}
+	}
+
+	function removeCurrentSelection(): void {
+		if (selectedItem) {
+			let selectedIndex = menuItems.indexOf(selectedItem);
+			if (selectedIndex !== -1) {
+				menuItems[selectedIndex].selected = false;
 			}
 		}
 	}
 
-	// This function ensures that the select menu
-	// fits inside the plugin viewport
-	// if its too big, it will resize it and enable a scrollbar
-	// if its off screen it will shift the position
+	function blinkBackground(event: MouseEvent): void {
+		var x = 4;
+		var interval = 70;
+
+		// Blink the background
+		for (var i = 0; i < x; i++) {
+			setTimeout(function () {
+				(event.target as HTMLElement).classList.toggle('blink');
+			}, i * interval);
+		}
+		// Delay closing the menu
+		setTimeout(function () {
+			menuList.classList.add('hidden'); // Hide the menu
+		}, interval * x + 40);
+	}
+
 	function resizeAndPosition(): void {
+		adjustMenuHeight();
+		adjustMenuPosition();
+	}
+
+	function adjustMenuHeight(): void {
 		// Set the max height of the menu based on plugin/iframe window
 		let maxMenuHeight = window.innerHeight - 16;
 		let menuHeight = menuList.offsetHeight;
-		let menuResized = false;
 
 		if (menuHeight > maxMenuHeight) {
 			menuList.style.height = maxMenuHeight + 'px';
-			menuResized = true;
 		}
+	}
 
-		// Lets adjust the position of the menu if its cut off from viewport
+	function adjustMenuPosition(): void {
+		// Let's adjust the position of the menu if it's cut off from viewport
 		let bounding = menuList.getBoundingClientRect();
 		let parentBounding = menuButton.getBoundingClientRect();
 
@@ -184,9 +211,10 @@
 			menuList.style.top = -Math.abs(parentBounding.top - 8) + 'px';
 		}
 		if (bounding.bottom > (window.innerHeight || document.documentElement.clientHeight)) {
-			let minTop = -Math.abs(parentBounding.top - (window.innerHeight - menuHeight - 8));
+			let minTop = -Math.abs(parentBounding.top - (window.innerHeight - menuList.offsetHeight - 8));
 			let newTop = -Math.abs(bounding.bottom - window.innerHeight + 16);
-			if (menuResized) {
+
+			if (menuList.style.height !== 'auto') {
 				menuList.style.top = -Math.abs(parentBounding.top - 8) + 'px';
 			} else if (newTop > minTop) {
 				menuList.style.top = minTop + 'px';
@@ -195,8 +223,6 @@
 			}
 		}
 	}
-
-	// This function resets the properties of the menuList
 	function resetMenuProperties(): void {
 		menuList.style.height = 'auto';
 		menuList.style.top = '0px';
@@ -223,8 +249,8 @@
 				<span class="icon"><Icon {iconText} color="black3" /></span>
 			{/if}
 
-			{#if value}
-				<span class="label">{value.label}</span>
+			{#if selectedItem}
+				<span class="label">{selectedItem.label}</span>
 			{:else}
 				<span class="placeholder">{placeholder}</span>
 			{/if}
