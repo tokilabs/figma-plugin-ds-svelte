@@ -29,7 +29,8 @@
 	export { className as class };
 </script>
 
-<!-- 
+<!-- @component
+
   This component renders an icon, which can either be represented by SVG data (iconName) 
   or text (iconText). If both are provided, the text will be used. The icon's color 
   is controlled by the 'color' prop, and additional CSS classes can be applied using 
