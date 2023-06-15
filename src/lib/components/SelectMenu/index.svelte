@@ -17,6 +17,8 @@
 	import SelectDivider from './../SelectDivider/index.svelte';
 	import Icon from './../Icon/index.svelte';
 
+	// TODO: Add a keytrap so when the user press esc on a open SelectMenu it closes it, instead of closing the modal
+
 	export let iconName: string | null = null;
 	export let iconText: string | null = null;
 	export let disabled: boolean = false;
@@ -38,6 +40,12 @@
 	onMount(async () => {
 		updateSelectedAndIds();
 	});
+
+	$: {
+		console.clear();
+		updateSelectedAndIds();
+		console.log('SelectMenu:: Got Menu Items: ', menuItems);
+	}
 
 	function updateSelectedAndIds(): void {
 		updateSelection();
@@ -305,7 +313,6 @@
 <style lang="scss">
 	.wrapper {
 		position: relative;
-		overflow: hidden;
 	}
 
 	button {
@@ -367,11 +374,6 @@
 				}
 			}
 		}
-
-		* {
-			pointer-events: none;
-			overflow: hidden;
-		}
 	}
 
 	.label,
@@ -384,7 +386,6 @@
 		margin-right: 6px;
 		margin-top: -3px;
 		white-space: nowrap;
-		overflow: hidden;
 		text-overflow: ellipsis;
 	}
 
