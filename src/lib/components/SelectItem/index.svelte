@@ -1,12 +1,12 @@
 <script lang="ts">
-	export let itemId: number;
+	export let itemId: string = '';
 	export let selected = false;
 	export { className as class };
 
 	let className: string = '';
 </script>
 
-<li {itemId} class:highlight={selected} class={className} on:mouseenter on:click on:keypress>
+<li itemid={itemId} class:highlight={selected} class={className} on:mouseenter on:click on:keypress>
 	<div class="icon" class:selected />
 	<div class="label"><slot /></div>
 </li>
