@@ -1,18 +1,20 @@
-<script lang="ts">
-	export let checked: boolean = false;
-	export let value: string = '';
-	export let disabled: boolean = false;
-	export let tabindex: number = 0;
+<script>
+	export let checked = false;
+	export let mixed = false;
+	export let value = '';
+	export let disabled = false;
+	export let tabindex = 0;
 	export { className as class };
 
-	let uniqueId: string = 'checkbox--' + (Math.random() * 10000000).toFixed(0).toString();
-	let className: string = '';
+	let uniqueId = 'checkbox--' + (Math.random() * 10000000).toFixed(0).toString();
+	let className = '';
 </script>
 
 <div class={className}>
 	<input
 		type="checkbox"
 		id={uniqueId}
+		indeterminate={mixed}
 		bind:checked
 		bind:value
 		{disabled}
@@ -91,5 +93,10 @@
 	input:enabled:focus + label:before {
 		border: 1px solid var(--figma-color-border-brand-strong);
 		box-shadow: 0 0 0 1px var(--figma-color-border-brand-strong);
+	}
+	input:indeterminate + label:before {
+		background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 9H4V7H12V9Z' fill='black' fill-opacity='0.8'/%3E%3C/svg%3E%0A");
+		background-repeat: no-repeat;
+		background-position: -3px;
 	}
 </style>
