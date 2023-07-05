@@ -1,17 +1,17 @@
 {
 	"name": "@tokilabs/figma-plugin-sdk",
 	"version": "0.0.1",
-  "author": "Saulo Vallory <saulo@tokilabs.io>",
-  "contributors": [
-    {
-      "name": "Alberto Nunes",
-      "email": "alberto@tokilabs.io"
-    },
-    {
-      "name": "Yago Fernandes",
-      "email": "yago@tokilabs.io"
-    }
-  ],
+	"author": "Saulo Vallory <saulo@tokilabs.io>",
+	"contributors": [
+		{
+			"name": "Alberto Nunes",
+			"email": "alberto@tokilabs.io"
+		},
+		{
+			"name": "Yago Fernandes",
+			"email": "yago@tokilabs.io"
+		}
+	],
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
