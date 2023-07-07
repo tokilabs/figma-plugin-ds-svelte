@@ -70,7 +70,7 @@
 		line-height: var(--font-line-height);
 		letter-spacing: var(--font-letter-spacing-pos-xsmall);
 		margin-left: -16px;
-		padding: var(--size-xxsmall) var(--size-xsmall) var(--size-xxsmall) var(--size-small);
+		/* padding: var(--size-xxsmall) var(--size-xsmall) var(--size-xxsmall) var(--size-small); */
 		user-select: none;
 	}
 	label:before {
