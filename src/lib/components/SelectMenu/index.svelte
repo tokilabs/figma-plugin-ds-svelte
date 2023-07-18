@@ -1,14 +1,3 @@
-<script lang="ts" context="module">
-	// Define the type for menu items
-	export type MenuItem = {
-		id: string;
-		value: string;
-		label: string;
-		group: null;
-		selected: boolean;
-	};
-</script>
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { createEventDispatcher } from 'svelte';
@@ -17,60 +6,55 @@
 	import SelectDivider from './../SelectDivider/index.svelte';
 	import Icon from './../Icon/index.svelte';
 
-	// TODO: Add a keytrap so when the user press esc on a open SelectMenu it closes it, instead of closing the modal
-
-	export let iconName: string | null = null;
-	export let iconText: string | null = null;
-	export let disabled: boolean = false;
-	export let macOSBlink: boolean = false;
-	export let menuItems: MenuItem[] = [];
-	export let placeholder: string = 'Please make a selection.';
-	export let selectedItem: MenuItem | null = null;
-	export let showGroupLabels: boolean = false;
-	let className: string = '';
+	export let iconName = null;
+	export let iconText = null;
+	export let disabled = false;
+	export let macOSBlink = false;
+	export let menuItems = []; //pass data in via this prop to generate menu items
+	export let placeholder = 'Please make a selection.';
+	export let value = null; //stores the current selection, note, the value will be an object from your array
+	export let showGroupLabels = false; //default prop, true will show option group labels
 	export { className as class };
 
 	const dispatch = createEventDispatcher();
-	// let groups = checkGroups();
-	let menuWrapper: HTMLElement;
-	let menuButton: HTMLElement;
-	let menuList: HTMLElement;
+	let className = '';
+	let groups = checkGroups();
+	let menuWrapper, menuButton, menuList;
+	$: menuItems, updateSelectedAndIds();
 
-	// Define the onMount function
+	//FUNCTIONS
+
+	//assign id's to the input array
 	onMount(async () => {
+    console.clear()
 		updateSelectedAndIds();
 	});
 
-	$: {
-		console.clear();
-		updateSelectedAndIds();
-		console.log('SelectMenu:: Got Menu Items: ', menuItems);
-	}
-
-	function updateSelectedAndIds(): void {
-		updateSelection();
-		updateDisabledState();
-	}
-
-	function updateSelection() {
+	// this function runs everytime the menuItems array os updated
+	// it will auto assign ids and keep the value var updated
+	function updateSelectedAndIds() {
 		if (menuItems) {
-			menuItems.forEach((item) => {
+			menuItems.forEach((item, index) => {
+				//update id
+				item['id'] = index;
+				//update selection
 				if (item.selected === true) {
-					selectedItem = item;
+					value = item;
 				}
 			});
 		}
-	}
-
-	function updateDisabledState() {
+		//set placeholder
 		if (menuItems.length <= 0) {
+			// placeholder = 'There are no items to select';
 			disabled = true;
 		} else {
+			// placeholder = 'Please make a selection';
 			disabled = false;
 		}
 	}
 
-	function checkGroups(): boolean {
+	//determine if option groups are present
+	function checkGroups() {
 		let groupCount = 0;
 		if (menuItems) {
 			menuItems.forEach((item) => {
@@ -78,140 +62,108 @@
 					groupCount++;
 				}
 			});
-			return groupCount === menuItems.length;
+			if (groupCount === menuItems.length) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 		return false;
 	}
 
-	function removeHighlight(event: Event): void {
-		let items = Array.from(
-			(event.target as HTMLElement)?.parentNode?.children || []
-		) as HTMLElement[];
-		items.forEach((item: HTMLElement) => {
+	//menu highlight function on the selected menu item
+	function removeHighlight(event) {
+		let items = Array.from(event.target.parentNode.children);
+		items.forEach((item) => {
 			item.blur();
 			item.classList.remove('highlight');
 		});
 	}
 
-	function menuClick(event: MouseEvent): void {
-		if (disabled) {
-			return;
-		}
+	//run for all menu click events
+	//this opens/closes the menu
+	function menuClick(event) {
 		resetMenuProperties();
 
 		if (!event.target) {
-			hideMenu();
-		} else if ((event.target as Node).contains(menuButton)) {
-			handleMenuButtonClick(event);
-		} else if (menuList.contains(event.target as Node)) {
-			handleMenuItemClick(event);
-		}
-	}
+			menuList.classList.add('hidden');
+		} else if (event.target.contains(menuButton)) {
+			let topPos = 0;
 
-	function hideMenu() {
-		menuList.classList.add('hidden');
-	}
+			if (value) {
+				//toggle menu
+				menuList.classList.remove('hidden');
 
-	function handleMenuButtonClick(event: MouseEvent): void {
-		if (selectedItem) {
-			showMenuForSelectedItem();
-		} else {
-			showMenuForFirstItem();
-		}
-	}
+				let id = value.id;
+				let selectedItem = menuList.querySelector('[itemId="' + id + '"]');
+				selectedItem.focus(); //set focus to the currently selected item
 
-	function showMenuForSelectedItem(): void {
-		menuList.classList.remove('hidden');
+				// calculate distance from top so that we can position the dropdown menu
+				let parentTop = menuList.getBoundingClientRect().top;
+				let itemTop = selectedItem.getBoundingClientRect().top;
+				let topPos = itemTop - parentTop - 3;
+				menuList.style.top = -Math.abs(topPos) + 'px';
 
-		if (selectedItem) {
-			let itemIndex = menuItems.indexOf(selectedItem);
-			let selectedItemElement = menuList.children[itemIndex];
-			(selectedItemElement as HTMLElement).focus(); // Set focus to the currently selected item
+				//update size and position based on plugin UI
+				resizeAndPosition();
+			} else {
+				menuList.classList.remove('hidden');
+				menuList.style.top = '0px';
+				let firstItem = menuList.querySelector('[itemId="0"]');
+				firstItem.focus();
 
-			// Calculate distance from top so that we can position the dropdown menu
-			let parentTop = menuList.getBoundingClientRect().top;
-			let itemTop = (selectedItemElement as HTMLElement).getBoundingClientRect().top;
-			let topPos = itemTop - parentTop - 3;
-			menuList.style.top = -Math.abs(topPos) + 'px';
+				//update size and position based on plugin UI
+				resizeAndPosition();
+			}
+		} else if (menuList.contains(event.target)) {
+			//find selected item in array
+			let itemId = parseInt(event.target.getAttribute('itemId'));
 
-			// Update size and position based on plugin UI
-			resizeAndPosition();
-		}
-	}
+			//remove current selection if there is one
+			if (value) {
+				menuItems[value.id].selected = false;
+			}
+			menuItems[itemId].selected = true; //select current item
+			updateSelectedAndIds();
+			dispatch('change', menuItems[itemId]);
 
-	function showMenuForFirstItem(): void {
-		menuList.classList.remove('hidden');
-		menuList.style.top = '0px';
-		let firstItem = menuList.querySelector(':first-child');
-		if (firstItem) {
-			(firstItem as HTMLElement).focus();
-		}
+			if (macOSBlink) {
+				var x = 4;
+				var interval = 70;
 
-		// Update size and position based on plugin UI
-		resizeAndPosition();
-	}
-
-	function handleMenuItemClick(event: MouseEvent): void {
-		// Find selected item in array
-		let itemIndex = Array.from(menuList.children).indexOf(event.target as HTMLElement);
-
-		// Remove current selection if there is one
-		removeCurrentSelection();
-
-		menuItems[itemIndex].selected = true; // Select current item
-		updateSelectedAndIds();
-		dispatch('change', menuItems[itemIndex]);
-
-		if (macOSBlink) {
-			blinkBackground(event);
-		} else {
-			hideMenu();
-			menuButton.classList.remove('selected'); // Remove selected state from button
-		}
-	}
-
-	function removeCurrentSelection(): void {
-		if (selectedItem) {
-			let selectedIndex = menuItems.indexOf(selectedItem);
-			if (selectedIndex !== -1) {
-				menuItems[selectedIndex].selected = false;
+				//blink the background
+				for (var i = 0; i < x; i++) {
+					setTimeout(function () {
+						event.target.classList.toggle('blink');
+					}, i * interval);
+				}
+				//delay closing the menu
+				setTimeout(function () {
+					menuList.classList.add('hidden'); //hide the menu
+				}, interval * x + 40);
+			} else {
+				menuList.classList.add('hidden'); //hide the menu
+				menuButton.classList.remove('selected'); //remove selected state from button
 			}
 		}
 	}
 
-	function blinkBackground(event: MouseEvent): void {
-		var x = 4;
-		var interval = 70;
-
-		// Blink the background
-		for (var i = 0; i < x; i++) {
-			setTimeout(function () {
-				(event.target as HTMLElement).classList.toggle('blink');
-			}, i * interval);
-		}
-		// Delay closing the menu
-		setTimeout(function () {
-			menuList.classList.add('hidden'); // Hide the menu
-		}, interval * x + 40);
-	}
-
-	function resizeAndPosition(): void {
-		adjustMenuHeight();
-		adjustMenuPosition();
-	}
-
-	function adjustMenuHeight(): void {
-		// Set the max height of the menu based on plugin/iframe window
+	// this function ensures that the select menu
+	// fits inside the plugin viewport
+	// if its too big, it will resize it and enable a scrollbar
+	// if its off screen it will shift the position
+	function resizeAndPosition() {
+		//set the max height of the menu based on plugin/iframe window
 		let maxMenuHeight = window.innerHeight - 16;
 		let menuHeight = menuList.offsetHeight;
+		let menuResized = false;
 
 		if (menuHeight > maxMenuHeight) {
 			menuList.style.height = maxMenuHeight + 'px';
+			menuResized = true;
 		}
-	}
 
-	function adjustMenuPosition(): void {
-		// Let's adjust the position of the menu if it's cut off from viewport
+		//lets adjust the position of the menu if its cut off from viewport
 		let bounding = menuList.getBoundingClientRect();
 		let parentBounding = menuButton.getBoundingClientRect();
 
@@ -219,10 +171,9 @@
 			menuList.style.top = -Math.abs(parentBounding.top - 8) + 'px';
 		}
 		if (bounding.bottom > (window.innerHeight || document.documentElement.clientHeight)) {
-			let minTop = -Math.abs(parentBounding.top - (window.innerHeight - menuList.offsetHeight - 8));
+			let minTop = -Math.abs(parentBounding.top - (window.innerHeight - menuHeight - 8));
 			let newTop = -Math.abs(bounding.bottom - window.innerHeight + 16);
-
-			if (menuList.style.height !== 'auto') {
+			if (menuResized) {
 				menuList.style.top = -Math.abs(parentBounding.top - 8) + 'px';
 			} else if (newTop > minTop) {
 				menuList.style.top = minTop + 'px';
@@ -231,7 +182,7 @@
 			}
 		}
 	}
-	function resetMenuProperties(): void {
+	function resetMenuProperties() {
 		menuList.style.height = 'auto';
 		menuList.style.top = '0px';
 	}
@@ -244,21 +195,20 @@
 		on:blur
 		bind:this={menuWrapper}
 		{disabled}
-		class:disabled
-		class:placeholder
-		class:showGroupLabels
-		class:macOSBlink
+		{placeholder}
+		{showGroupLabels}
+		{macOSBlink}
 		class="wrapper {className}"
 	>
-		<button bind:this={menuButton} on:click={menuClick} class:disabled>
+		<button bind:this={menuButton} on:click={menuClick} {disabled}>
 			{#if iconName}
 				<span class="icon"><Icon {iconName} color="black3" /></span>
 			{:else if iconText}
 				<span class="icon"><Icon {iconText} color="black3" /></span>
 			{/if}
 
-			{#if selectedItem}
-				<span class="label">{selectedItem.label}</span>
+			{#if value}
+				<span class="label">{value.label}</span>
 			{:else}
 				<span class="placeholder">{placeholder}</span>
 			{/if}
@@ -285,7 +235,7 @@
 
 		<ul class="menu hidden" bind:this={menuList}>
 			{#if menuItems && menuItems.length > 0}
-				{#each menuItems as item, i (item.id)}
+				{#each menuItems as item, i}
 					{#if i === 0}
 						{#if item.group && showGroupLabels}
 							<SelectDivider label>{item.group}</SelectDivider>
@@ -310,7 +260,7 @@
 	</div>
 </ClickOutside>
 
-<style lang="scss">
+<style>
 	.wrapper {
 		position: relative;
 	}
@@ -321,59 +271,51 @@
 		border: 1px solid transparent;
 		height: 30px;
 		width: 100%;
-		margin: 1px 0;
-		padding: 4px var(--size-xxsmall) 0;
-		overflow: hidden;
+		margin: 1px 0 1px 0;
+		padding: 4px var(--size-xxsmall) 0px var(--size-xxsmall);
 		overflow-y: hidden;
 		border-radius: var(--border-radius-small);
 		background-color: var(--white);
-
-		&:hover,
-		&:active {
-			border-color: var(--black1);
-
-			.placeholder {
-				color: var(--black8);
-			}
-
-			.caret svg path {
-				fill: var(--black8);
-			}
-
-			.caret {
-				margin-left: auto;
-			}
-		}
-
-		&:focus {
-			border: 1px solid var(--blue);
-			outline: 1px solid var(--blue);
-			outline-offset: -2px;
-			padding-left: calc(var(--size-xxsmall) + 1px);
-
-			.placeholder {
-				color: var(--black8);
-			}
-		}
-
-		&:disabled {
-			.label {
-				color: var(--black3);
-			}
-
-			&:hover {
-				justify-content: flex-start;
-				border-color: transparent;
-
-				.placeholder {
-					color: var(--black3);
-				}
-
-				.caret svg path {
-					fill: var(--black3);
-				}
-			}
-		}
+	}
+	button:hover,
+	button:active {
+		border-color: var(--black1);
+	}
+	button:hover .placeholder {
+		color: var(--black8);
+	}
+	button:hover .caret svg path,
+	button:focus .caret svg path {
+		fill: var(--black8);
+	}
+	button:hover .caret,
+	button:focus .caret {
+		margin-left: auto;
+	}
+	button:focus {
+		border: 1px solid var(--blue);
+		outline: 1px solid var(--blue);
+		outline-offset: -2px;
+		padding-left: calc(var(--size-xxsmall) + 1px);
+	}
+	button:focus .placeholder {
+		color: var(--black8);
+	}
+	button:disabled .label {
+		color: var(--black3);
+	}
+	button:disabled:hover {
+		justify-content: flex-start;
+		border-color: transparent;
+	}
+	button:disabled:hover .placeholder {
+		color: var(--black3);
+	}
+	button:disabled:hover .caret svg path {
+		fill: var(--black3);
+	}
+	button * {
+		pointer-events: none;
 	}
 
 	.label,
@@ -386,6 +328,7 @@
 		margin-right: 6px;
 		margin-top: -3px;
 		white-space: nowrap;
+		overflow-x: hidden;
 		text-overflow: ellipsis;
 	}
 
@@ -396,14 +339,16 @@
 	.caret {
 		display: block;
 		margin-top: -1px;
+	}
 
-		svg path {
-			fill: var(--figma-color-icon-tertiary);
-		}
+	.caret svg path {
+		fill: var(--figma-color-icon-tertiary);
 	}
 
 	.icon {
-		margin: -2px 0 0 -8px;
+		margin-left: -8px;
+		margin-top: -2px;
+		margin-right: 0;
 	}
 
 	.menu {
@@ -413,31 +358,29 @@
 		width: 100%;
 		background-color: var(--color-bg-menu);
 		box-shadow: var(--shadow-hud);
-		padding: var(--size-xxsmall) 0;
+		padding: var(--size-xxsmall) 0 var(--size-xxsmall) 0;
 		border-radius: var(--border-radius-small);
 		margin: 0;
 		z-index: 50;
-		overflow: hidden;
-
-		&::-webkit-scrollbar {
-			width: 12px;
-			background-color: transparent;
-			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
-			background-repeat: repeat;
-			background-size: 100% auto;
-		}
-
-		&::-webkit-scrollbar-track {
-			border: solid 3px transparent;
-			-webkit-box-shadow: inset 0 0 10px 10px transparent;
-			box-shadow: inset 0 0 10px 10px transparent;
-		}
-
-		&::-webkit-scrollbar-thumb {
-			border: solid 3px transparent;
-			border-radius: 6px;
-			-webkit-box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
-			box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
-		}
+		overflow-x: overlay;
+		overflow-y: auto;
+	}
+	.menu::-webkit-scrollbar {
+		width: 12px;
+		background-color: transparent;
+		background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=);
+		background-repeat: repeat;
+		background-size: 100% auto;
+	}
+	.menu::-webkit-scrollbar-track {
+		border: solid 3px transparent;
+		-webkit-box-shadow: inset 0 0 10px 10px transparent;
+		box-shadow: inset 0 0 10px 10px transparent;
+	}
+	.menu::-webkit-scrollbar-thumb {
+		border: solid 3px transparent;
+		border-radius: 6px;
+		-webkit-box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
+		box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0.4);
 	}
 </style>

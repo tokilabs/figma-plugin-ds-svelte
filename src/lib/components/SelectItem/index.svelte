@@ -1,12 +1,19 @@
-<script lang="ts">
-	export let itemId: string = '';
+<script>
+	export let itemId;
 	export let selected = false;
 	export { className as class };
 
-	let className: string = '';
+	let className = '';
 </script>
 
-<li itemid={itemId} class:highlight={selected} class={className} on:mouseenter on:click on:keypress>
+<li
+	{itemId}
+	tabindex={itemId + 1}
+	class:highlight={selected}
+	class={className}
+	on:mouseenter
+	on:click
+>
 	<div class="icon" class:selected />
 	<div class="label"><slot /></div>
 </li>
