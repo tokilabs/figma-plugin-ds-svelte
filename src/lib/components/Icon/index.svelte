@@ -36,19 +36,16 @@
   is controlled by the 'color' prop, and additional CSS classes can be applied using 
   the 'className' prop. If the 'spin' prop is true, a spinning animation will be applied to the icon.
 -->
-<div
-	class:spin
-	{iconText}
-	{iconName}
-	class="icon-component {className}"
-	style="color: var({color}); fill: var({color})"
-	on:click
-	on:keydown
->
+<div class="icon-component {className}" on:click on:keydown>
 	{#if iconText}
 		{iconText}
 	{:else}
-		{@html iconName}
+		<img
+			src={iconName}
+			style="color: var({color}); fill: var({color})"
+			class:spin
+			alt="Component"
+		/>
 	{/if}
 </div>
 
