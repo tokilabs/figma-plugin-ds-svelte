@@ -66,6 +66,7 @@
     "svelte-click-outside": "^1.0.0",
 		"svelte": "^3.54.0",
 		"svelte-check": "^3.0.1",
+		"svelte-click-outside": "^1.0.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"vite": "^4.3.0",
