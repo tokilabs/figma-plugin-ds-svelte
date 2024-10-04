@@ -17,7 +17,7 @@
 		bind:value
 		{disabled}
 		{tabindex}
-		onclick="this.blur();"
+		on:click={() => this.blur()}
 		on:change
 		on:focus
 		on:blur
