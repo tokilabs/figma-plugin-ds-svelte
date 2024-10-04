@@ -6,19 +6,19 @@
 	import SelectDivider from './../SelectDivider/index.svelte';
 	import Icon from './../Icon/index.svelte';
 
-	export let iconName = null;
-	export let iconText = null;
+	export const iconName = null;
+	export const iconText = null;
 	export let disabled = false;
-	export let macOSBlink = false;
-	export let menuItems = []; //pass data in via this prop to generate menu items
-	export let placeholder = 'Please make a selection.';
+	export const macOSBlink = false;
+	export const menuItems = []; //pass data in via this prop to generate menu items
+	export const placeholder = 'Please make a selection.';
 	export let value = null; //stores the current selection, note, the value will be an object from your array
-	export let showGroupLabels = false; //default prop, true will show option group labels
+	export const showGroupLabels = false; //default prop, true will show option group labels
 	export { className as class };
 
 	const dispatch = createEventDispatcher();
-	let className = '';
-	let groups = checkGroups();
+	const className = '';
+	const groups = checkGroups();
 	let menuWrapper, menuButton, menuList;
 	$: menuItems, updateSelectedAndIds();
 
@@ -73,7 +73,7 @@
 
 	//menu highlight function on the selected menu item
 	function removeHighlight(event) {
-		let items = Array.from(event.target.parentNode.children);
+		const items = Array.from(event.target.parentNode.children);
 		items.forEach((item) => {
 			item.blur();
 			item.classList.remove('highlight');
@@ -88,20 +88,20 @@
 		if (!event.target) {
 			menuList.classList.add('hidden');
 		} else if (event.target.contains(menuButton)) {
-			let topPos = 0;
+			const topPos = 0;
 
 			if (value) {
 				//toggle menu
 				menuList.classList.remove('hidden');
 
-				let id = value.id;
-				let selectedItem = menuList.querySelector('[itemId="' + id + '"]');
+				const id = value.id;
+				const selectedItem = menuList.querySelector('[itemId="' + id + '"]');
 				selectedItem.focus(); //set focus to the currently selected item
 
 				// calculate distance from top so that we can position the dropdown menu
-				let parentTop = menuList.getBoundingClientRect().top;
-				let itemTop = selectedItem.getBoundingClientRect().top;
-				let topPos = itemTop - parentTop - 3;
+				const parentTop = menuList.getBoundingClientRect().top;
+				const itemTop = selectedItem.getBoundingClientRect().top;
+				const topPos = itemTop - parentTop - 3;
 				menuList.style.top = -Math.abs(topPos) + 'px';
 
 				//update size and position based on plugin UI
@@ -109,7 +109,7 @@
 			} else {
 				menuList.classList.remove('hidden');
 				menuList.style.top = '0px';
-				let firstItem = menuList.querySelector('[itemId="0"]');
+				const firstItem = menuList.querySelector('[itemId="0"]');
 				firstItem.focus();
 
 				//update size and position based on plugin UI
@@ -117,7 +117,7 @@
 			}
 		} else if (menuList.contains(event.target)) {
 			//find selected item in array
-			let itemId = parseInt(event.target.getAttribute('itemId'));
+			const itemId = Number.parseInt(event.target.getAttribute('itemId'));
 
 			//remove current selection if there is one
 			if (value) {
@@ -133,12 +133,12 @@
 
 				//blink the background
 				for (var i = 0; i < x; i++) {
-					setTimeout(function () {
+					setTimeout(() => {
 						event.target.classList.toggle('blink');
 					}, i * interval);
 				}
 				//delay closing the menu
-				setTimeout(function () {
+				setTimeout(() => {
 					menuList.classList.add('hidden'); //hide the menu
 				}, interval * x + 40);
 			} else {
@@ -154,8 +154,8 @@
 	// if its off screen it will shift the position
 	function resizeAndPosition() {
 		//set the max height of the menu based on plugin/iframe window
-		let maxMenuHeight = window.innerHeight - 16;
-		let menuHeight = menuList.offsetHeight;
+		const maxMenuHeight = window.innerHeight - 16;
+		const menuHeight = menuList.offsetHeight;
 		let menuResized = false;
 
 		if (menuHeight > maxMenuHeight) {
@@ -164,15 +164,15 @@
 		}
 
 		//lets adjust the position of the menu if its cut off from viewport
-		let bounding = menuList.getBoundingClientRect();
-		let parentBounding = menuButton.getBoundingClientRect();
+		const bounding = menuList.getBoundingClientRect();
+		const parentBounding = menuButton.getBoundingClientRect();
 
 		if (bounding.top < 0) {
 			menuList.style.top = -Math.abs(parentBounding.top - 8) + 'px';
 		}
 		if (bounding.bottom > (window.innerHeight || document.documentElement.clientHeight)) {
-			let minTop = -Math.abs(parentBounding.top - (window.innerHeight - menuHeight - 8));
-			let newTop = -Math.abs(bounding.bottom - window.innerHeight + 16);
+			const minTop = -Math.abs(parentBounding.top - (window.innerHeight - menuHeight - 8));
+			const newTop = -Math.abs(bounding.bottom - window.innerHeight + 16);
 			if (menuResized) {
 				menuList.style.top = -Math.abs(parentBounding.top - 8) + 'px';
 			} else if (newTop > minTop) {

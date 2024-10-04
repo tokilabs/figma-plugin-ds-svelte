@@ -1,6 +1,6 @@
 <script>
 
-    export let label = false;
+    export const label = false;
     
 </script>
 

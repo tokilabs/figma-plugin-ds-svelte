@@ -1,21 +1,21 @@
 <script lang="ts">
 	import Icon from './../Icon/index.svelte';
 
-	export let id: string | null = null;
+	export const id: string | null = null;
 	export let value: string | null = null;
-	export let name: string | null = null;
-	export let iconText: string | null = null;
-	export let borders: boolean = false;
-	export let disabled: boolean = false;
-	export let iconName: string | null = null;
-	export let spin: boolean = false;
-	export let type: string = 'text';
-	export let invalid: boolean = false;
-	export let errorMessage: string = 'Error message';
-	export let placeholder: string = 'Input something here...';
+	export const name: string | null = null;
+	export const iconText: string | null = null;
+	export const borders = false;
+	export const disabled = false;
+	export const iconName: string | null = null;
+	export const spin = false;
+	export const type = 'text';
+	export const invalid = false;
+	export const errorMessage = 'Error message';
+	export const placeholder = 'Input something here...';
 	export { className as class };
 
-	let className: string = '';
+	const className = '';
 	const typeAction = (node: HTMLInputElement) => {
 		node.type = type;
 	};

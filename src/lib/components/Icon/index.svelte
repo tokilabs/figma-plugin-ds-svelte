@@ -4,28 +4,28 @@
 	 * If you have an SVG you'd like to use, import it in the parent component
 	 * and pass the data into this prop.
 	 */
-	export let iconName: string | null = null;
+	export const iconName: string | null = null;
 
 	/**
 	 * spin: A boolean that, when true, applies a spinning animation to the icon.
 	 */
-	export let spin: boolean = false;
+	export const spin = false;
 
 	/**
 	 * iconText: A string that will be displayed as the icon's text.
 	 * If this prop is provided, it will be used instead of the iconName prop.
 	 */
-	export let iconText: string | null = null;
+	export const iconText: string | null = null;
 
 	/**
 	 * color: The color of the icon. This should be a CSS color variable.
 	 */
-	export let color: string = '--figma-color-icon';
+	export const color = '--figma-color-icon';
 
 	/**
 	 * className: Additional CSS classes that can be applied to the icon.
 	 */
-	let className: string = '';
+	const className = '';
 	export { className as class };
 </script>
 

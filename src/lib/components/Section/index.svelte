@@ -1,6 +1,6 @@
 <script>
 
-    let className = '';
+    const className = '';
 
 </script>
 

@@ -1,14 +1,14 @@
 <script>
     import { onMount } from 'svelte';
 
-    export let size = 'xsmall';
-    export let weight = 'normal';
-    export let inverse = false; //this prop uses different letterspacing values for inversed type (light on dark)
+    export const size = 'xsmall';
+    export const weight = 'normal';
+    export const inverse = false; //this prop uses different letterspacing values for inversed type (light on dark)
     export let color = '--figma-color-text';
-    export let inline = false;
+    export const inline = false;
     export { className as class };
     
-    let className = '';
+    const className = '';
     let cssColorVar; 
 
     onMount(async () => {

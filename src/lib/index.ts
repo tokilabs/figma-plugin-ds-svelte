@@ -37,7 +37,7 @@ export {
 	SelectDivider,
 	SelectItem,
 	SelectMenu,
-	MenuItem,
+	type MenuItem,
 	Switch,
 	Textarea,
 	Type

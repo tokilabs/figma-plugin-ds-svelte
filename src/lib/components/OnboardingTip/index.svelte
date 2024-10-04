@@ -1,13 +1,13 @@
 <script lang="ts">
   import Icon from './../Icon/index.svelte';
 
-  export let spin: boolean = false;
-  export let color: string = "black8";
-  export let iconName: string | null = null;
-  export let iconText: string | null = null;
+  export const spin = false;
+  export const color = "black8";
+  export const iconName: string | null = null;
+  export const iconText: string | null = null;
   export { className as class };
 
-  let className: string = '';
+  const className = '';
 </script>
 
 <div class="onboarding-tip {className}">

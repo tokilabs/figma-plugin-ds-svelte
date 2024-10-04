@@ -4,27 +4,27 @@
 	/**
 	 * iconName: The name of the icon to be displayed.
 	 */
-	export let iconName: string = '';
+	export const iconName = '';
 
 	/**
 	 * iconText: The text to be displayed as the icon's content.
 	 */
-	export let iconText: string | null = null;
+	export const iconText: string | null = null;
 
 	/**
 	 * selected: Indicates whether the icon is selected.
 	 */
-	export let selected: boolean = false;
+	export const selected = false;
 
 	/**
 	 * spin: Indicates whether the icon should have a spinning animation.
 	 */
-	export let spin: boolean = false;
+	export const spin = false;
 
 	/**
 	 * class: Additional CSS classes that can be applied to the icon.
 	 */
-	let className: string = '';
+	const className = '';
 	export { className as class };
 </script>
 

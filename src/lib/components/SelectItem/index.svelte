@@ -1,9 +1,9 @@
 <script>
 	export let itemId;
-	export let selected = false;
+	export const selected = false;
 	export { className as class };
 
-	let className = '';
+	const className = '';
 </script>
 
 <li

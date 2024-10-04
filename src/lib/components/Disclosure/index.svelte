@@ -6,11 +6,11 @@
     
     const dispatch = createEventDispatcher();
     const selected = writable(null);
-    let className = '';
+    const className = '';
     let disclosureWrapper;
 
-    const clickHandler = function(itemId) {
-        let currentVal = getValue(selected);
+    const clickHandler = (itemId) => {
+        const currentVal = getValue(selected);
         if (currentVal != itemId) {
             selected.set(itemId);
             dispatch("change", itemId);

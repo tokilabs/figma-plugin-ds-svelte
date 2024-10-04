@@ -1,10 +1,10 @@
 <script lang="ts">
-	export let variant: 'primary' | 'secondary' | 'tertiary' = 'primary';
-	export let disabled: boolean = false;
-	export let destructive: boolean = false;
+	export const variant: 'primary' | 'secondary' | 'tertiary' = 'primary';
+	export const disabled = false;
+	export const destructive = false;
 	export { className as class };
 
-	let className: string = '';
+	const className = '';
 </script>
 
 <button

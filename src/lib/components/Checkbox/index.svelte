@@ -4,10 +4,11 @@
 	export let value = '';
 	export let disabled = false;
 	export let tabindex = 0;
+
+	let className = '';
 	export { className as class };
 
-	let uniqueId = 'checkbox--' + (Math.random() * 10000000).toFixed(0).toString();
-	let className = '';
+	const uniqueId = 'checkbox--' + (Math.random() * 10000000).toFixed(0).toString();
 </script>
 
 <div class={className}>

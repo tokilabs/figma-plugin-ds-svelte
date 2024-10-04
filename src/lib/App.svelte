@@ -124,28 +124,28 @@
         ]
     }
 
-    let menuItemsExample1 = [
+    const menuItemsExample1 = [
         { 'value': 'item1', 'label': 'Menu item 1', 'group': null, 'selected': false },
         { 'value': 'item2', 'label': 'Menu item 2 ', 'group': null, 'selected': false },
         { 'value': 'item3', 'label': 'Menu item 3', 'group': null, 'selected': false },
         { 'value': 'item4', 'label': 'Menu item 4', 'group': null, 'selected': false }
     ];
     //example with an initial selection
-    let menuItemsExample2 = [
+    const menuItemsExample2 = [
         { 'value': 'item1', 'label': 'Menu item 1', 'group': null, 'selected': false },
         { 'value': 'item2', 'label': 'Menu item 2 ', 'group': null, 'selected': true },
         { 'value': 'item3', 'label': 'Menu item 3', 'group': null, 'selected': false },
         { 'value': 'item4', 'label': 'Menu item 4', 'group': null, 'selected': false }
     ];
     //example with option groups (we will show the labels with a prop)
-    let menuItemsExample3 = [
+    const menuItemsExample3 = [
         { 'value': 'item1', 'label': 'Granny Smith', 'group': 'Apples', 'selected': false },
         { 'value': 'item2', 'label': 'Honey Crisp ', 'group': 'Apples', 'selected': true },
         { 'value': 'item3', 'label': 'Blood', 'group': 'Oranges', 'selected': false },
         { 'value': 'item4', 'label': 'Valencia', 'group': 'Oranges', 'selected': false }
     ];
     //example with an initial selection and option groups 
-    let menuItemsExample4 = [
+    const menuItemsExample4 = [
         { 'value': 'item1', 'label': 'Passthrough', 'group': 'group1', 'selected': true },
         { 'value': 'item2', 'label': 'Normal ', 'group': 'group1', 'selected': false },
         { 'value': 'item3', 'label': 'Darken', 'group': 'group2', 'selected': false },
